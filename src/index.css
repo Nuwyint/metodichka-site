@@ -34,8 +34,8 @@ body {
 .app {
   min-height: 100vh;
   background: radial-gradient(circle at top left, #1d253a 0, #020617 50%);
+  position: relative;
 }
-
 /* ---------------- HEADER ---------------- */
 
 .header {
@@ -320,9 +320,7 @@ body {
 /* ---------------- ИНТЕРАКТИВНЫЕ ПЛАШКИ ---------------- */
 
 .interactive-panel {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
+  position: absolute;
   width: 260px;
   background: radial-gradient(
     circle at top left,
@@ -338,11 +336,14 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease-out;
+  /* top задаём из React через style={{ top }} */
 }
+/* ЛЕВАЯ — правее сайдбара (~290px ширина сайдбара) */
 .interactive-panel--left {
-  left: 320px; /* если надо, подгони под свою ширину сайдбара */
+  left: 320px; /* подгони, если нужно */
 }
 
+/* ПРАВАЯ — у правого края окна */
 .interactive-panel--right {
   right: 14px;
 }

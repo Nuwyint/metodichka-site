@@ -6,8 +6,8 @@ import "./index.css";
 const sections = [
   {
     id: "intro",
-    title: "ВВЕДЕНИЕ",
-    short: "Что такое мультимедийные технологии и зачем нужна эта методичка.",
+    title: "Введение",
+    short: "Что такое мультимедийные технологии.",
     content: (
       <>
         <p>
@@ -44,8 +44,8 @@ const sections = [
   },
   {
     id: "chapter1",
-    title: "1. ТЕКСТ КАК ЭЛЕМЕНТ ДИЗАЙНА. ТЕОРИЯ ЦВЕТА",
-    short: "Как работать с текстом и цветом, чтобы было красиво и читабельно.",
+    title: " Текст как элемент дизайна. Теория цвета",
+    short: "Как работать с текстом и цветом.",
     content: (
       <>
         <h3>1.1. ОБРАБОТКА ТЕКСТА</h3>
@@ -350,8 +350,9 @@ function MiniQuiz({ title, question, options, correctIndex }) {
 }
 
 // Выезжающая интерактивная плашка
-function InteractivePanel({ side, block, visible }) {
-  if (!block) return null;
+function InteractivePanel({ side, block, visible, top }) {
+  if (!block || !visible || top == null) return null;
+
   const classes =
     "interactive-panel interactive-panel--" +
     side +
@@ -382,7 +383,11 @@ function InteractivePanel({ side, block, visible }) {
     );
   }
 
-  return <aside className={classes}>{inner}</aside>;
+ return (
+    <aside className={classes} style={{ top }}>
+      {inner}
+    </aside>
+  );
 }
 
 // ------------------ ГЛАВНЫЙ КОМПОНЕНТ ------------------
@@ -391,8 +396,16 @@ function App() {
   const [currentId, setCurrentId] = useState("intro");
   const [scrollPercent, setScrollPercent] = useState(0);
 
+  const [leftTop, setLeftTop] = useState(null);
+  const [rightTop, setRightTop] = useState(null);
+
   // слушаем скролл окна, а не одного блока
   useEffect(() => {
+    // при переходе на другую главу сбрасываем плашки
+    setLeftTop(null);
+    setRightTop(null);
+  }, [currentId]);
+   useEffect(() => {
     const handleScroll = () => {
       const doc = document.documentElement;
       const scrollTop = window.scrollY || doc.scrollTop || 0;
@@ -405,12 +418,29 @@ function App() {
 
       const p = (scrollTop / maxScroll) * 100;
       setScrollPercent(p);
+
+      // конфиг для текущего раздела
+      const cfg = interactiveConfig[currentId] || {};
+
+       if (cfg.left && leftTop === null && p > 30) {
+        const top = scrollTop + window.innerHeight * 0.5;
+        setLeftTop(top);
+      }
+
+      // если есть правая плашка и ещё не ставили её top
+      if (cfg.right && rightTop === null && p > 70) {
+        const top = scrollTop + window.innerHeight * 0.3;
+        setRightTop(top);
+      }
+       
+    
     };
 
-    handleScroll(); // сразу посчитать при монтировании
+    handleScroll(); // посчитать сразу при монтировании
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [currentId, leftTop, rightTop]);
+
 
   const currentIndex = sections.findIndex((s) => s.id === currentId);
   const currentSection =
@@ -443,9 +473,10 @@ function App() {
     scrollToTop();
   };
 
-  const cfg = interactiveConfig[currentId] || {};
-  const showLeft = scrollPercent > 30; // появляется после ~15% прокрутки
-  const showRight = scrollPercent > 70; // после ~45%
+   const cfg = interactiveConfig[currentId] || {};
+  const showLeft = leftTop !== null;
+  const showRight = rightTop !== null;
+
 
   return (
     <div className="app">
@@ -481,8 +512,18 @@ function App() {
       </div>
 
       {/* Интерактивные плашки слева/справа */}
-      <InteractivePanel side="left" block={cfg.left} visible={showLeft} />
-      <InteractivePanel side="right" block={cfg.right} visible={showRight} />
+      <InteractivePanel
+        side="left"
+        block={cfg.left}
+        visible={showLeft}
+        top={leftTop}
+      />
+      <InteractivePanel
+        side="right"
+        block={cfg.right}
+        visible={showRight}
+        top={rightTop}
+      />
     </div>
   );
 }
