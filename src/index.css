@@ -335,20 +335,18 @@ body {
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.95);
   color: #e5e7eb;
   z-index: 15;
-  transition: transform 0.25s ease-out, opacity 0.2s ease-out;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.2s ease-out;
 }
-
 .interactive-panel--left {
-  left: 14px;
-  transform: translate(-120%, -50%);
+  left: 320px; /* если надо, подгони под свою ширину сайдбара */
 }
 
 .interactive-panel--right {
   right: 14px;
-  transform: translate(120%, -50%);
 }
+
 
 .interactive-panel--visible {
   opacity: 1;
