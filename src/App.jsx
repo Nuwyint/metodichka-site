@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./index.css";
 
 // ------------------ ДАННЫЕ РАЗДЕЛОВ ------------------
 
 const sections = [
   {
-    id: "intro", 
-    title: " Введение ",
-    short: "Что такое мультимедийные технологии.",
+    id: "intro",
+    title: "ВВЕДЕНИЕ",
+    short: "Что такое мультимедийные технологии и зачем нужна эта методичка.",
     content: (
       <>
         <p>
@@ -171,7 +171,6 @@ const sections = [
 ];
 
 // ------------------ ИНТЕРАКТИВ ДЛЯ ПЛАШЕК ------------------
-// Можно расширять и дописывать под другие разделы
 
 const interactiveConfig = {
   intro: {
@@ -251,7 +250,9 @@ function Header({ currentTitle, progress, onPrev, onNext, hasPrev, hasNext }) {
         <button
           className="header-btn header-btn-ghost"
           type="button"
-          onClick={() => alert("Здесь потом будет, например, скачивание PDF")}
+          onClick={() =>
+            alert("Здесь потом можно сделать скачивание PDF-версии методички")
+          }
         >
           ⬇ PDF
         </button>
@@ -341,7 +342,7 @@ function MiniQuiz({ title, question, options, correctIndex }) {
         <p className="ip-result">
           {isCorrect
             ? "✅ Всё верно, идём дальше!"
-            : "❌ Не совсем. Попробуй ещё раз перечитать раздел."}
+            : "❌ Не совсем. Перечитай раздел ещё раз."}
         </p>
       )}
     </div>
@@ -390,33 +391,48 @@ function App() {
   const [currentId, setCurrentId] = useState("intro");
   const [scrollPercent, setScrollPercent] = useState(0);
 
+  // слушаем скролл окна, а не одного блока
+  useEffect(() => {
+    const handleScroll = () => {
+      const doc = document.documentElement;
+      const scrollTop = window.scrollY || doc.scrollTop || 0;
+      const maxScroll = doc.scrollHeight - window.innerHeight;
+
+      if (maxScroll <= 0) {
+        setScrollPercent(0);
+        return;
+      }
+
+      const p = (scrollTop / maxScroll) * 100;
+      setScrollPercent(p);
+    };
+
+    handleScroll(); // сразу посчитать при монтировании
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const currentIndex = sections.findIndex((s) => s.id === currentId);
   const currentSection =
     sections.find((s) => s.id === currentId) || sections[0];
 
-  const handleScroll = (e) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.target;
-    const maxScroll = scrollHeight - clientHeight;
-    if (maxScroll <= 0) {
-      setScrollPercent(0);
-      return;
-    }
-    const p = (scrollTop / maxScroll) * 100;
-    setScrollPercent(p);
-  };
-
-  // Общий прогресс: в зависимости от номера раздела и скролла внутри него
+  // общий прогресс = номер раздела + внутри него по скроллу
   const totalProgress =
     ((currentIndex + scrollPercent / 100) / sections.length) * 100;
 
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < sections.length - 1;
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const goPrev = () => {
     if (!hasPrev) return;
     const prev = sections[currentIndex - 1];
     setCurrentId(prev.id);
     setScrollPercent(0);
+    scrollToTop();
   };
 
   const goNext = () => {
@@ -424,11 +440,12 @@ function App() {
     const next = sections[currentIndex + 1];
     setCurrentId(next.id);
     setScrollPercent(0);
+    scrollToTop();
   };
 
   const cfg = interactiveConfig[currentId] || {};
-  const showLeft = scrollPercent > 15; // появляется после ~15% скролла
-  const showRight = scrollPercent > 45; // появляется после ~45% скролла
+  const showLeft = scrollPercent > 30; // появляется после ~15% прокрутки
+  const showRight = scrollPercent > 70; // после ~45%
 
   return (
     <div className="app">
@@ -448,10 +465,11 @@ function App() {
           onSelect={(id) => {
             setCurrentId(id);
             setScrollPercent(0);
+            scrollToTop();
           }}
         />
 
-        <main className="main" onScroll={handleScroll}>
+        <main className="main">
           <article className="content">
             <h2 className="content-title">{currentSection.title}</h2>
             {currentSection.short && (
@@ -462,7 +480,7 @@ function App() {
         </main>
       </div>
 
-      {/* Интерактивные плашки, выезжающие слева и справа */}
+      {/* Интерактивные плашки слева/справа */}
       <InteractivePanel side="left" block={cfg.left} visible={showLeft} />
       <InteractivePanel side="right" block={cfg.right} visible={showRight} />
     </div>
