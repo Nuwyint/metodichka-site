@@ -1,68 +1,185 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #111827;
+  background-color: #f3f4f6;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  /* базовые цвета */
+  --bg-main: #f9fafb;
+  --bg-sidebar: #111827;
+  --bg-header: #1f2933;
+  --accent: #2563eb;
+  --accent-soft: #dbeafe;
+  --border: #e5e7eb;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+}
+
+.app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Шапка */
+
+.header {
+  background: var(--bg-header);
+  color: #f9fafb;
+  padding: 16px 24px;
+  border-bottom: 1px solid #111827;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.title {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Основная раскладка */
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: calc(100vh - 72px);
+}
+
+/* Сайдбар */
+
+.sidebar {
+  background: var(--bg-sidebar);
+  color: #e5e7eb;
+  padding: 16px 12px 24px;
+  border-right: 1px solid #000;
+}
+
+.sidebar-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  font-size: 14px;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.sidebar-item:hover {
+  background: #374151;
+}
+
+.sidebar-item--active {
+  background: #f9fafb;
+  color: #111827;
+}
+
+/* Контент */
+
+.main {
+  background: var(--bg-main);
+  padding: 16px 20px 32px;
+  overflow-y: auto;
+}
+
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px 24px 28px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--border);
+}
+
+.content-title {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.content-body p {
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+.content-body ul,
+.content-body ol {
+  padding-left: 20px;
+  margin: 8px 0 12px;
+}
+
+.content-body li {
+  margin-bottom: 4px;
+}
+
+.content-body h3 {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-size: 17px;
+}
+
+.content-body h4 {
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+blockquote {
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 14px;
+}
+
+/* Адаптивчик */
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
   }
-  a:hover {
-    color: #747bff;
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid #000;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .content {
+    box-shadow: none;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
   }
 }
