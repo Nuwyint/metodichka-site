@@ -486,8 +486,7 @@ body {
   z-index: 15;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-40%); /* чуть выше своей позиции */
-  transition: opacity 1s ease-out, transform 1s ease-out;
+  transform: translateY(-40%); /* стартовая позиция чуть выше */
   /* top задаём из React через style={{ top }} */
 }
 
@@ -501,10 +500,22 @@ body {
   right: 14px;
 }
 
+/* Когда включаем visible — запускается анимация появления */
 .interactive-panel--visible {
-  opacity: 1;
   pointer-events: auto;
-  transform: translateY(-50%); /* плавный слайд чутка вниз */
+  animation: panel-fade-in 0.45s ease-out forwards;
+}
+
+/* КАДРЫ АНИМАЦИИ */
+@keyframes panel-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
 }
 
 
