@@ -315,13 +315,18 @@ const interactiveConfig = {
       type: "tip",
       title: "Как работать с методичкой",
       text: "Иди сверху вниз: сначала введение, затем теория и практика. Помечай для себя, какие задания уже сделал.",
+      trigger: 12,   // после ~12% скролла
+      offset: 0.35,  // 35% высоты окна
     },
     right: {
       type: "video",
       title: "Идея видео-введения",
       text: "Сюда позже можно встроить ролик: обзор курса, объяснение структуры и целей.",
+      trigger: 35,
+      offset: 0.45,
     },
   },
+
   chapter1: {
     left: {
       type: "quiz",
@@ -333,14 +338,59 @@ const interactiveConfig = {
         "Только длина строки",
       ],
       correctIndex: 1,
+      trigger: 18,
+      offset: 0.4,
     },
     right: {
       type: "note",
       title: "Идея для практики",
       text: "Возьми любой скучный текстовый документ и попробуй сделать из него аккуратный плакат А4: заголовок, подзаголовки, акценты, цветовые акценты.",
+      trigger: 45,
+      offset: 0.35,
+    },
+  },
+
+  chapter2: {
+    left: {
+      type: "tip",
+      title: "Как читать интерфейс",
+      text: "Сначала смотри на крупные блоки: шапка, навигация, контент, подвал. Потом — на отдельные элементы.",
+      trigger: 20,
+      offset: 0.3,
+    },
+    right: {
+      type: "quiz",
+      title: "Проверь себя: что главное в GUI?",
+      question: "Что в первую очередь помогает пользователю не потеряться в интерфейсе?",
+      options: [
+        "Красивая анимация",
+        "Понятная структура и навигация",
+        "Максимум разных шрифтов",
+      ],
+      correctIndex: 1,
+      trigger: 50,
+      offset: 0.45,
+    },
+  },
+
+  chapter3: {
+    left: {
+      type: "note",
+      title: "Идея для кода",
+      text: "Сначала сделай простой пример генерации картинки из линий и прямоугольников, потом добавляй сложность.",
+      trigger: 25,
+      offset: 0.35,
+    },
+    right: {
+      type: "tip",
+      title: "Где пригодится генерация",
+      text: "Превью-шаблоны, фоны, динамические диаграммы — всё это можно генерировать программно.",
+      trigger: 60,
+      offset: 0.4,
     },
   },
 };
+
 
 // ------------------ КОМПОНЕНТЫ ------------------
 
@@ -630,15 +680,20 @@ function App() {
 
       // конфиг для текущего раздела
       const cfg = interactiveConfig[currentId] || {};
+      const leftCfg = cfg.left;
+      const rightCfg = cfg.right;
 
-       if (cfg.left && leftTop === null && p > 30) {
-        const top = scrollTop + window.innerHeight * 0.5;
+      // левая плашка
+      if (leftCfg && leftTop === null && p > (leftCfg.trigger ?? 30)) {
+        const offset = leftCfg.offset ?? 0.4;
+        const top = scrollTop + window.innerHeight * offset;
         setLeftTop(top);
       }
 
-      // если есть правая плашка и ещё не ставили её top
-      if (cfg.right && rightTop === null && p > 70) {
-        const top = scrollTop + window.innerHeight * 0.3;
+      // правая плашка
+      if (rightCfg && rightTop === null && p > (rightCfg.trigger ?? 70)) {
+        const offset = rightCfg.offset ?? 0.4;
+        const top = scrollTop + window.innerHeight * offset;
         setRightTop(top);
       }
        

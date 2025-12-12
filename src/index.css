@@ -405,7 +405,7 @@ body {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-40%); /* чуть выше своей позиции */
-  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  transition: opacity 1s ease-out, transform 1s ease-out;
   /* top задаём из React через style={{ top }} */
 }
 
