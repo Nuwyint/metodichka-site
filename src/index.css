@@ -310,9 +310,8 @@ body {
 }
 
 
-.content-block p {
-  margin: 8px 0;
-  font-size: 14px;
+.content-block--text p {
+  margin: 6px 0 8px;
 }
 
 .content-block p + p {
@@ -325,22 +324,24 @@ body {
 
 .content-block--media {
   max-width: 640px;
-  margin: 0 auto;           /* центруем */
-  text-align: center;
+  margin: 8px auto 16px;
+  padding: 14px 16px 16px;
+  border-radius: 20px;
   background: radial-gradient(
     circle at top,
-    #111827 0,
-    #020617 65%
+    rgba(148, 163, 184, 0.08),
+    rgba(15, 23, 42, 0.95)
   );
+  border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
 
 .content-media-img,
 .content-media-video {
   width: 100%;
-  display: block;
   border-radius: 14px;
-  margin-bottom: 8px;
+  display: block;
+  margin-bottom: 6px;
 }
 
 .content-media-caption {
@@ -348,9 +349,12 @@ body {
   color: var(--text-muted);
 }
 
-.content-body li {
-  margin-bottom: 4px;
+.content-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* расстояние между блоками */
 }
+
 
 .content-body h3 {
   margin-top: 18px;
