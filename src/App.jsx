@@ -455,68 +455,87 @@ function SectionBody({ section }) {
   return (
     <div className="content-body">
       {blocks.map((block, idx) => {
-        // 🔹 МЕДИА-БЛОК (картинка / видео)
+        // 🔹 МЕДИА-БЛОКИ
         if (block.type === "media") {
-          // 🔹 спец-карточка "Виды шрифтов"
+          // 1) Карточка со шрифтами (font-card)
           if (block.mediaType === "font-card") {
             return (
               <figure
                 key={idx}
-                className="content-block content-block--media font-card"
+                className="content-block content-block--media font-card-figure"
               >
-                <div className="font-card-header">
-                  <h4 className="font-card-title font-sans">
-                    Шрифты без засечек
-                  </h4>
-                  <p className="font-card-sub">
-                    Используются для заголовков и коротких текстов.
-                    Примеры: Arial, Verdana, Calibri.
-                  </p>
-                </div>
-
-                <div className="font-card-grid">
-                  <div className="font-card-col">
-                    <h5 className="font-card-label">С засечками (Serif)</h5>
-                    <p className="font-card-desc">
-                      Имеют небольшие выступы на концах букв – засечки.
-                      Подходят для длинных текстов: книги, журналы.
-                    </p>
-                    <p className="font-card-sample font-serif">
-                      Times New Roman, Georgia, Garamond
+                <div className="font-card">
+                  <div className="font-card-header">
+                    <h4 className="font-card-title">Виды шрифтов</h4>
+                    <p className="font-card-sub">
+                      Как в оригинальном рисунке, но текстом и реальными
+                      гарнитурами.
                     </p>
                   </div>
 
-                  <div className="font-card-col">
-                    <h5 className="font-card-label">Моноширинные (Monospace)</h5>
-                    <p className="font-card-desc">
-                      Каждый символ занимает одинаковую ширину.
-                      Используются для программного кода и технических текстов.
-                    </p>
-                    <p className="font-card-sample font-mono">
-                      Courier New, Consolas, Lucida Console
-                    </p>
-                  </div>
+                  <div className="font-card-grid">
+                    <div className="font-card-col">
+                      <h5 className="font-card-label">
+                        Без засечек (Sans Serif)
+                      </h5>
+                      <p className="font-card-desc">
+                        Используются для заголовков и коротких текстов,
+                        хорошо смотрятся на экранах.
+                      </p>
+                      <p className="font-card-sample font-sans">
+                        Arial, Verdana, Calibri
+                      </p>
+                    </div>
 
-                  <div className="font-card-col">
-                    <h5 className="font-card-label">Рукописные (Script)</h5>
-                    <p className="font-card-desc">
-                      Имитируют рукописный текст. Хороши для открыток
-                      и приглашений, но не для длинных абзацев.
-                    </p>
-                    <p className="font-card-sample font-script">
-                      Comic Sans MS, Lucida Calligraphy, Freestyle Script
-                    </p>
-                  </div>
+                    <div className="font-card-col">
+                      <h5 className="font-card-label">С засечками (Serif)</h5>
+                      <p className="font-card-desc">
+                        Удобны для длинных текстов, книг и журналов. Засечки
+                        помогают глазу «цепляться» за строки.
+                      </p>
+                      <p className="font-card-sample font-serif">
+                        Times New Roman, Georgia, Garamond
+                      </p>
+                    </div>
 
-                  <div className="font-card-col">
-                    <h5 className="font-card-label">Декоративные (Decorative)</h5>
-                    <p className="font-card-desc">
-                      Яркий, необычный дизайн. Используются в заголовках,
-                      логотипах и рекламе, а не в основном тексте.
-                    </p>
-                    <p className="font-card-sample font-decor">
-                      Broadway, Impact, STENCIL
-                    </p>
+                    <div className="font-card-col">
+                      <h5 className="font-card-label">
+                        Моноширинные (Monospace)
+                      </h5>
+                      <p className="font-card-desc">
+                        Каждый символ занимает одинаковую ширину. Используются
+                        для программного кода и технических текстов.
+                      </p>
+                      <p className="font-card-sample font-mono">
+                        Courier New, Consolas, Lucida Console
+                      </p>
+                    </div>
+
+                    <div className="font-card-col">
+                      <h5 className="font-card-label">
+                        Рукописные (Script)
+                      </h5>
+                      <p className="font-card-desc">
+                        Имитируют рукописный текст. Хороши для открыток и
+                        приглашений, но не для длинных абзацев.
+                      </p>
+                      <p className="font-card-sample font-script">
+                        Comic Sans MS, Lucida Calligraphy, Freestyle Script
+                      </p>
+                    </div>
+
+                    <div className="font-card-col">
+                      <h5 className="font-card-label">
+                        Декоративные (Decorative)
+                      </h5>
+                      <p className="font-card-desc">
+                        Яркий, необычный дизайн. Используются в заголовках,
+                        логотипах и рекламе, а не в основном тексте.
+                      </p>
+                      <p className="font-card-sample font-decor">
+                        Broadway, Impact, STENCIL
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -529,7 +548,35 @@ function SectionBody({ section }) {
             );
           }
 
-          // 🔹 обычное изображение / видео — как раньше
+          // 2) Пасхалка: RGB/CMYK → мем по наведению
+          if (block.mediaType === "hover-image") {
+            return (
+              <figure
+                key={idx}
+                className="content-block content-block--media"
+              >
+                <div className="hover-image-wrapper">
+                  <img
+                    src={block.src}
+                    alt={block.alt || ""}
+                    className="hover-image hover-image--base"
+                  />
+                  <img
+                    src={block.hoverSrc}
+                    alt={block.altHover || block.alt || ""}
+                    className="hover-image hover-image--hover"
+                  />
+                </div>
+                {block.caption && (
+                  <figcaption className="content-media-caption">
+                    {block.caption}
+                  </figcaption>
+                )}
+              </figure>
+            );
+          }
+
+          // 3) Обычная картинка / видео
           return (
             <figure
               key={idx}
@@ -543,10 +590,7 @@ function SectionBody({ section }) {
                 />
               )}
               {block.mediaType === "video" && (
-                <video
-                  className="content-media-video"
-                  controls
-                >
+                <video className="content-media-video" controls>
                   <source src={block.src} type="video/mp4" />
                   Ваш браузер не поддерживает видео.
                 </video>
@@ -559,34 +603,6 @@ function SectionBody({ section }) {
             </figure>
           );
         }
-        if (block.mediaType === "hover-image") {
-          return (
-            <figure
-              key={idx}
-              className="content-block content-block--media hover-image-card"
-            >
-              <div className="hover-image-wrapper">
-                <img
-                  src={block.src}
-                  alt={block.alt || ""}
-                  className="content-media-img hover-image-normal"
-                />
-                <img
-                  src={block.hoverSrc}
-                  alt={block.altHover || block.alt || ""}
-                  className="content-media-img hover-image-meme"
-                />
-              </div>
-
-              {block.caption && (
-                <figcaption className="content-media-caption">
-                  {block.caption}
-                </figcaption>
-              )}
-            </figure>
-          );
-        }
-
 
         // 🔹 КВИЗ-БЛОК
         if (block.type === "quiz") {
@@ -605,7 +621,7 @@ function SectionBody({ section }) {
           );
         }
 
-        // 🔹 ТЕКСТОВЫЙ БЛОК (по умолчанию)
+        // 🔹 ТЕКСТОВЫЙ БЛОК
         return (
           <section
             key={idx}

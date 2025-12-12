@@ -429,38 +429,44 @@ body {
   margin-bottom: 0; /* подпись отдельно под блоком */
 }
 
+/* карточка с пасхалкой RGB/CMYK */
 .hover-image-wrapper {
   position: relative;
+  border-radius: 16px;
   overflow: hidden;
-  border-radius: 14px;
 }
 
-.hover-image-normal,
-.hover-image-meme {
+.hover-image {
   width: 100%;
   display: block;
-  border-radius: 14px;
-  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  border-radius: inherit;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Мем лежит поверх, но по умолчанию невидим */
-.hover-image-meme {
+/* верхняя мем-картинка */
+.hover-image--hover {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
   opacity: 0;
+  transform: translate(-50%, -50%) scale(1.02);
+  width: auto;
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
 }
 
-/* При наведении плавно прячем обычную картинку... */
-.hover-image-wrapper:hover .hover-image-normal {
+/* при наведении — плавно меняем одну на другую */
+.hover-image-wrapper:hover .hover-image--hover {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hover-image-wrapper:hover .hover-image--base {
   opacity: 0;
   transform: scale(0.98);
 }
 
-/* ...и показываем мем */
-.hover-image-wrapper:hover .hover-image-meme {
-  opacity: 1;
-  transform: scale(1.02);
-}
 
 .content-media-img,
 .content-media-video {
