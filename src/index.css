@@ -430,20 +430,26 @@ body {
 }
 
 /* карточка с пасхалкой RGB/CMYK */
+/* --- Пасхалка: RGB/CMYK → мем --- */
+
 .hover-image-wrapper {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
 }
 
+/* базовая картинка – как была, на всю ширину */
 .hover-image {
-  width: 100%;
   display: block;
   border-radius: inherit;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* верхняя мем-картинка */
+.hover-image--base {
+  width: 100%;
+}
+
+/* мем – поменьше, по центру, без растяжения и обрезания */
 .hover-image--hover {
   position: absolute;
   top: 50%;
@@ -456,10 +462,10 @@ body {
   object-fit: contain;
 }
 
-/* при наведении — плавно меняем одну на другую */
+/* при наведении показываем мем, прячем базу */
 .hover-image-wrapper:hover .hover-image--hover {
   opacity: 1;
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .hover-image-wrapper:hover .hover-image--base {
