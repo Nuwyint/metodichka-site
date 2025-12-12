@@ -318,10 +318,6 @@ body {
   margin-top: 10px; /* визуально чуть больше разрыв между абзацами */
 }
 
-.content-block--text {
-  /* можно оставить фон как есть, немного усилить читабельность */
-}
-
 .content-block--media {
   max-width: 640px;
   margin: 8px auto 16px;
@@ -352,7 +348,7 @@ body {
 .content-body {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* расстояние между блоками */
+  gap: 30px; 
 }
 
 
