@@ -364,6 +364,17 @@ body {
   font-size: 14px;
 }
 
+.important {
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.important::before {
+  content: "• ";
+  color: var(--accent);
+}
+
+
 /* ---------------- ИНТЕРАКТИВНЫЕ ПЛАШКИ ---------------- */
 
 .interactive-panel {
