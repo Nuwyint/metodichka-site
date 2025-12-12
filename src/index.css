@@ -317,7 +317,18 @@ body {
 .content-block p + p {
   margin-top: 10px; /* визуально чуть больше разрыв между абзацами */
 }
+.content-block--quiz {
+  background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+  border-color: rgba(129, 140, 248, 0.7);
+}
 
+.content-block--quiz .ip-title {
+  font-size: 1rem;
+}
+
+.content-block--quiz .ip-btn {
+  margin-top: 1rem;
+}
 .content-block--media {
   max-width: 640px;
   margin: 8px auto 16px;
@@ -393,9 +404,11 @@ body {
   z-index: 15;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease-out;
+  transform: translateY(-40%); /* чуть выше своей позиции */
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
   /* top задаём из React через style={{ top }} */
 }
+
 /* ЛЕВАЯ — правее сайдбара (~290px ширина сайдбара) */
 .interactive-panel--left {
   left: 320px; /* подгони, если нужно */
@@ -406,19 +419,12 @@ body {
   right: 14px;
 }
 
-
 .interactive-panel--visible {
   opacity: 1;
   pointer-events: auto;
+  transform: translateY(-50%); /* плавный слайд чутка вниз */
 }
 
-.interactive-panel--left.interactive-panel--visible {
-  transform: translate(0, -50%);
-}
-
-.interactive-panel--right.interactive-panel--visible {
-  transform: translate(0, -50%);
-}
 
 .ip-title {
   margin: 0 0 6px;
