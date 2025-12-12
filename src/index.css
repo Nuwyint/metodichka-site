@@ -290,15 +290,53 @@ body {
   color: var(--text-muted);
 }
 
-.content-body p {
-  margin: 8px 0;
-  font-size: 14px;
+.content-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* расстояние между блоками: текст – пустота – медиа – пустота – текст */
 }
 
 .content-body ul,
 .content-body ol {
   padding-left: 20px;
   margin: 8px 0 12px;
+}
+
+.content-block {
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background: radial-gradient(circle at top left, #020617 0, #020617 60%);
+  padding: 16px 18px 18px;
+}
+
+
+.content-block--text {
+  /* можно оставить фон как есть, немного усилить читабельность */
+}
+
+.content-block--media {
+  max-width: 640px;
+  margin: 0 auto;           /* центруем */
+  text-align: center;
+  background: radial-gradient(
+    circle at top,
+    #111827 0,
+    #020617 65%
+  );
+}
+
+
+.content-media-img,
+.content-media-video {
+  width: 100%;
+  display: block;
+  border-radius: 14px;
+  margin-bottom: 8px;
+}
+
+.content-media-caption {
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 .content-body li {
@@ -482,7 +520,13 @@ body {
   }
 
   .content {
-    border-radius: 14px;
-    padding: 14px 14px 18px;
-  }
+  max-width: 900px;
+  margin: 0 auto;
+  background: transparent;          /* было: градиент */
+  border-radius: 0;
+  padding: 18px 4px 32px;           /* поменьше отступы */
+  border: none;
+  box-shadow: none;
+}
+
 }
