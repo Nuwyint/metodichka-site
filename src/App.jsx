@@ -86,15 +86,12 @@ const sections = [
         ),
       },
 
-      // 🟣 ЦЕНТРАЛЬНЫЙ МЕДИА-БЛОК (между частями текста)
-      {
-        type: "media",
-        mediaType: "image",
-        src: "/media/typography_example.png",
-        alt: "Пример оформления текстового блока",
-        caption:
-          "Рис. 1. Пример текстового блока: заголовок, подзаголовок, абзацы и акценты.",
-      },
+      // 🟣 СРЕДНЯЯ ПЛАШКА: ВИДЫ ШРИФТОВ (вместо рис. 1)
+    {
+      type: "media",
+      mediaType: "font-card",
+      caption: "Рис. 1. Виды шрифтов, их описание и примеры.",
+    },
 
       // 🔹 1.2 + 1.3 — удобочитаемость и 4 принципа
       {
@@ -459,6 +456,79 @@ function SectionBody({ section }) {
       {blocks.map((block, idx) => {
         // 🔹 МЕДИА-БЛОК (картинка / видео)
         if (block.type === "media") {
+          // 🔹 спец-карточка "Виды шрифтов"
+          if (block.mediaType === "font-card") {
+            return (
+              <figure
+                key={idx}
+                className="content-block content-block--media font-card"
+              >
+                <div className="font-card-header">
+                  <h4 className="font-card-title font-sans">
+                    Шрифты без засечек
+                  </h4>
+                  <p className="font-card-sub">
+                    Используются для заголовков и коротких текстов.
+                    Примеры: Arial, Verdana, Calibri.
+                  </p>
+                </div>
+
+                <div className="font-card-grid">
+                  <div className="font-card-col">
+                    <h5 className="font-card-label">С засечками (Serif)</h5>
+                    <p className="font-card-desc">
+                      Имеют небольшие выступы на концах букв – засечки.
+                      Подходят для длинных текстов: книги, журналы.
+                    </p>
+                    <p className="font-card-sample font-serif">
+                      Times New Roman, Georgia, Garamond
+                    </p>
+                  </div>
+
+                  <div className="font-card-col">
+                    <h5 className="font-card-label">Моноширинные (Monospace)</h5>
+                    <p className="font-card-desc">
+                      Каждый символ занимает одинаковую ширину.
+                      Используются для программного кода и технических текстов.
+                    </p>
+                    <p className="font-card-sample font-mono">
+                      Courier New, Consolas, Lucida Console
+                    </p>
+                  </div>
+
+                  <div className="font-card-col">
+                    <h5 className="font-card-label">Рукописные (Script)</h5>
+                    <p className="font-card-desc">
+                      Имитируют рукописный текст. Хороши для открыток
+                      и приглашений, но не для длинных абзацев.
+                    </p>
+                    <p className="font-card-sample font-script">
+                      Comic Sans MS, Lucida Calligraphy, Freestyle Script
+                    </p>
+                  </div>
+
+                  <div className="font-card-col">
+                    <h5 className="font-card-label">Декоративные (Decorative)</h5>
+                    <p className="font-card-desc">
+                      Яркий, необычный дизайн. Используются в заголовках,
+                      логотипах и рекламе, а не в основном тексте.
+                    </p>
+                    <p className="font-card-sample font-decor">
+                      Broadway, Impact, STENCIL
+                    </p>
+                  </div>
+                </div>
+
+                {block.caption && (
+                  <figcaption className="content-media-caption">
+                    {block.caption}
+                  </figcaption>
+                )}
+              </figure>
+            );
+          }
+
+          // 🔹 обычное изображение / видео — как раньше
           return (
             <figure
               key={idx}
@@ -471,14 +541,15 @@ function SectionBody({ section }) {
                   className="content-media-img"
                 />
               )}
-
               {block.mediaType === "video" && (
-                <video className="content-media-video" controls>
+                <video
+                  className="content-media-video"
+                  controls
+                >
                   <source src={block.src} type="video/mp4" />
                   Ваш браузер не поддерживает видео.
                 </video>
               )}
-
               {block.caption && (
                 <figcaption className="content-media-caption">
                   {block.caption}
