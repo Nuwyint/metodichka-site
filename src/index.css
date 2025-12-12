@@ -310,6 +310,15 @@ body {
 }
 
 
+.content-block p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.content-block p + p {
+  margin-top: 10px; /* визуально чуть больше разрыв между абзацами */
+}
+
 .content-block--text {
   /* можно оставить фон как есть, немного усилить читабельность */
 }
