@@ -425,6 +425,43 @@ body {
   }
 }
 
+.hover-image-card .content-media-img {
+  margin-bottom: 0; /* подпись отдельно под блоком */
+}
+
+.hover-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.hover-image-normal,
+.hover-image-meme {
+  width: 100%;
+  display: block;
+  border-radius: 14px;
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+
+/* Мем лежит поверх, но по умолчанию невидим */
+.hover-image-meme {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+/* При наведении плавно прячем обычную картинку... */
+.hover-image-wrapper:hover .hover-image-normal {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* ...и показываем мем */
+.hover-image-wrapper:hover .hover-image-meme {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
 .content-media-img,
 .content-media-video {
   width: 100%;

@@ -156,14 +156,15 @@ const sections = [
 
       // 🟣 МЕДИА-БЛОК ДЛЯ ЦВЕТА
       {
-        type: "media",
-        mediaType: "image",
-        src: "/media/color_harmony_wheel.png",
-        alt: "Цветовой круг и примеры гармоний",
-        caption:
-          "Рис. 2. Цветовой круг и варианты гармоний: монохромная, аналоговая и комплементарная.",
+      type: "media",
+      mediaType: "hover-image",
+      src: "/media/normalspectre.png",
+      hoverSrc: "/media/memespectre.png",
+      alt: "Сравнение цветовых моделей RGB и CMYK",
+      altHover: "COLOR IS COLOR!",
+      caption:
+        "Рис. 2–3. Цветовые модели RGB и CMYK (наведите, чтобы увидеть отношение персонажа к цвету).",
       },
-
       // 🔹 1.4. ЦВЕТОВАЯ ПАЛИТРА
       {
         type: "text",
@@ -558,6 +559,34 @@ function SectionBody({ section }) {
             </figure>
           );
         }
+        if (block.mediaType === "hover-image") {
+          return (
+            <figure
+              key={idx}
+              className="content-block content-block--media hover-image-card"
+            >
+              <div className="hover-image-wrapper">
+                <img
+                  src={block.src}
+                  alt={block.alt || ""}
+                  className="content-media-img hover-image-normal"
+                />
+                <img
+                  src={block.hoverSrc}
+                  alt={block.altHover || block.alt || ""}
+                  className="content-media-img hover-image-meme"
+                />
+              </div>
+
+              {block.caption && (
+                <figcaption className="content-media-caption">
+                  {block.caption}
+                </figcaption>
+              )}
+            </figure>
+          );
+        }
+
 
         // 🔹 КВИЗ-БЛОК
         if (block.type === "quiz") {
