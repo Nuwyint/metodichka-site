@@ -342,6 +342,88 @@ body {
   border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
+.font-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.font-card-header {
+  text-align: center;
+}
+
+.font-card-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.font-card-sub {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.font-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+
+.font-card-col {
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+}
+
+.font-card-label {
+  margin: 0 0 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.font-card-desc {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.font-card-sample {
+  margin: 0;
+  font-size: 15px;
+}
+
+/* семейства шрифтов */
+
+.font-serif {
+  font-family: "Georgia", "Times New Roman", "Garamond", serif;
+}
+
+.font-sans {
+  font-family: "Segoe UI", "Arial", "Verdana", sans-serif;
+}
+
+.font-script {
+  font-family: "Lucida Handwriting", "Brush Script MT", "Segoe Script", cursive;
+}
+
+.font-mono {
+  font-family: "Consolas", "Courier New", "Lucida Console", monospace;
+}
+
+.font-decor {
+  font-family: "Impact", "Stencil", "Copperplate", fantasy;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 640px) {
+  .font-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 .content-media-img,
 .content-media-video {
