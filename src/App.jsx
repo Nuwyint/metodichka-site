@@ -1763,7 +1763,7 @@ const interactiveConfig = {
       type: "tip",
       title: "Как читать интерфейс",
       text: "Сначала смотри на крупные блоки: шапка, навигация, контент, подвал. Потом — на отдельные элементы.",
-      trigger: 20,
+      trigger: 15,
       offset: 0.3,
     },
     right: {
@@ -1776,8 +1776,49 @@ const interactiveConfig = {
         "Максимум разных шрифтов",
       ],
       correctIndex: 1,
-      trigger: 50,
+      trigger: 25,
       offset: 0.45,
+    },
+    left2: {
+      type: "note",
+      title: "UX vs UI",
+      text: "UX-дизайн — это про удобство использования, а UI-дизайн — про внешний вид. Оба важны, но UX определяет, будет ли пользователь возвращаться.",
+      trigger: 40,
+      offset: 0.35,
+    },
+    right2: {
+      type: "tip",
+      title: "Карта интерфейса",
+      text: "Карта интерфейса помогает увидеть всю структуру целиком. Начни с главных разделов, потом детализируй подразделы и страницы.",
+      trigger: 30,
+      offset: 0.4,
+    },
+    left3: {
+      type: "note",
+      title: "Минимализм в дизайне",
+      text: "Минималистичный интерфейс не значит пустой. Это значит, что каждый элемент на месте и имеет смысл. Убери лишнее, оставь важное.",
+      trigger: 55,
+      offset: 0.3,
+    },
+    right3: {
+      type: "quiz",
+      title: "Плоский или материальный?",
+      question: "В чем основное отличие плоского дизайна от материального?",
+      options: [
+        "В цветовой палитре",
+        "В отсутствии объемных эффектов vs использовании слоев и теней",
+        "В размере шрифтов",
+      ],
+      correctIndex: 1,
+      trigger: 45,
+      offset: 0.5,
+    },
+    left4: {
+      type: "tip",
+      title: "Адаптивный дизайн",
+      text: "При создании интерфейса всегда думай о разных устройствах. Что хорошо смотрится на десктопе, может быть неудобно на телефоне. Тестируй на разных экранах.",
+      trigger: 65,
+      offset: 0.35,
     },
   },
 
@@ -2265,14 +2306,13 @@ function App() {
   const [currentId, setCurrentId] = useState("intro");
   const [scrollPercent, setScrollPercent] = useState(0);
 
-  const [leftTop, setLeftTop] = useState(null);
-  const [rightTop, setRightTop] = useState(null);
+  // Храним позиции всех плашек
+  const [panelPositions, setPanelPositions] = useState({});
 
   // слушаем скролл окна, а не одного блока
   useEffect(() => {
     // при переходе на другую главу сбрасываем плашки
-    setLeftTop(null);
-    setRightTop(null);
+    setPanelPositions({});
   }, [currentId]);
    useEffect(() => {
     const handleScroll = () => {
@@ -2290,39 +2330,24 @@ function App() {
 
       // конфиг для текущего раздела
       const cfg = interactiveConfig[currentId] || {};
-      const leftCfg = cfg.left;
-      const rightCfg = cfg.right;
+      const newPositions = {};
 
-      // левая плашка - обновляем позицию при каждом скролле
-      if (leftCfg) {
-        if (p > (leftCfg.trigger ?? 30)) {
-          const offset = leftCfg.offset ?? 0.4;
-          // Для fixed позиционирования: позиция относительно viewport
-          // Плашка следует за скроллом, оставаясь на определенном расстоянии от верха окна
-          const top = window.innerHeight * offset;
-          setLeftTop(top);
-        } else {
-          // Если не достигли триггера, скрываем плашку
-          setLeftTop(null);
+      // Обрабатываем все плашки из конфига
+      Object.entries(cfg).forEach(([key, panelCfg]) => {
+        if (panelCfg && typeof panelCfg === 'object' && panelCfg.trigger !== undefined) {
+          if (p > (panelCfg.trigger ?? 30)) {
+            const offset = panelCfg.offset ?? 0.4;
+            // Для fixed позиционирования: позиция относительно viewport
+            const top = window.innerHeight * offset;
+            newPositions[key] = top;
+          } else {
+            // Если не достигли триггера, скрываем плашку
+            newPositions[key] = null;
+          }
         }
-      } else {
-        setLeftTop(null);
-      }
+      });
 
-      // правая плашка - обновляем позицию при каждом скролле
-      if (rightCfg) {
-        if (p > (rightCfg.trigger ?? 70)) {
-          const offset = rightCfg.offset ?? 0.4;
-          // Для fixed позиционирования: позиция относительно viewport
-          const top = window.innerHeight * offset;
-          setRightTop(top);
-        } else {
-          // Если не достигли триггера, скрываем плашку
-          setRightTop(null);
-        }
-      } else {
-        setRightTop(null);
-      }
+      setPanelPositions(newPositions);
     };
 
     handleScroll(); // посчитать сразу при монтировании
@@ -2363,9 +2388,33 @@ function App() {
   };
 
    const cfg = interactiveConfig[currentId] || {};
-  const showLeft = leftTop !== null;
-  const showRight = rightTop !== null;
 
+  // Определяем, какие плашки слева, а какие справа
+  const leftPanels = [];
+  const rightPanels = [];
+  
+  Object.entries(cfg).forEach(([key, panelCfg]) => {
+    if (panelCfg && typeof panelCfg === 'object' && panelCfg.trigger !== undefined) {
+      const isLeft = key.startsWith('left');
+      const isRight = key.startsWith('right');
+      const top = panelPositions[key];
+      const visible = top !== null && top !== undefined;
+      
+      if (isLeft) {
+        leftPanels.push({ key, block: panelCfg, visible, top, trigger: panelCfg.trigger || 0 });
+      } else if (isRight) {
+        rightPanels.push({ key, block: panelCfg, visible, top, trigger: panelCfg.trigger || 0 });
+      }
+    }
+  });
+
+  // Сортируем плашки по триггеру
+  leftPanels.sort((a, b) => a.trigger - b.trigger);
+  rightPanels.sort((a, b) => a.trigger - b.trigger);
+
+  // Находим самую подходящую плашку для каждой стороны (последняя, которая активировалась)
+  const activeLeft = leftPanels.filter(p => p.visible).pop() || null;
+  const activeRight = rightPanels.filter(p => p.visible).pop() || null;
 
   return (
     <div className="app">
@@ -2400,19 +2449,27 @@ function App() {
         </main>
       </div>
 
-      {/* Интерактивные плашки слева/справа */}
-      <InteractivePanel
-        side="left"
-        block={cfg.left}
-        visible={showLeft}
-        top={leftTop}
-      />
-      <InteractivePanel
-        side="right"
-        block={cfg.right}
-        visible={showRight}
-        top={rightTop}
-      />
+      {/* Интерактивные плашки слева - показываем только активную */}
+      {activeLeft && (
+        <InteractivePanel
+          key={activeLeft.key}
+          side="left"
+          block={activeLeft.block}
+          visible={activeLeft.visible}
+          top={activeLeft.top}
+        />
+      )}
+      
+      {/* Интерактивные плашки справа - показываем только активную */}
+      {activeRight && (
+        <InteractivePanel
+          key={activeRight.key}
+          side="right"
+          block={activeRight.block}
+          visible={activeRight.visible}
+          top={activeRight.top}
+        />
+      )}
     </div>
   );
 }
