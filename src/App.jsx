@@ -1548,8 +1548,17 @@ plt.show()`,
             <p>
               Популярные программы для работы со звуком: Audacity (бесплатная), Adobe Audition, Pro Tools, Reaper, GarageBand (Mac), FL Studio.
             </p>
+            <p>
+              <strong>Пример звукового файла:</strong>
+            </p>
           </>
         ),
+      },
+      {
+        type: "media",
+        mediaType: "audio",
+        src: "/media/cricket-sound.mp3",
+        caption: "Пример звукового файла для мультимедийного проекта",
       },
       {
         type: "text",
