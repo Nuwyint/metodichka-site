@@ -647,11 +647,16 @@ body {
 
 
 .content-media-img,
-.content-media-video {
+.content-media-video,
+.content-media-audio {
   width: 100%;
   border-radius: 14px;
   display: block;
   margin-bottom: 6px;
+}
+
+.content-media-audio {
+  margin: 16px 0;
 }
 
 .content-media-caption {

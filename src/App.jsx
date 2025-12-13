@@ -2577,6 +2577,13 @@ function SectionBody({ section }) {
                   Ваш браузер не поддерживает видео.
                 </video>
               )}
+              {block.mediaType === "audio" && (
+                <audio className="content-media-audio" controls>
+                  <source src={block.src} type="audio/mpeg" />
+                  <source src={block.src} type="audio/mp3" />
+                  Ваш браузер не поддерживает аудио.
+                </audio>
+              )}
               {block.caption && (
                 <figcaption className="content-media-caption">
                   {block.caption}
