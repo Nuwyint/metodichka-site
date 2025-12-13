@@ -8,9 +8,7 @@
     "build": "vite build",
     "ac": "node auto-commit.cjs",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "check-images": "node setup-missing-images.js",
-    "extract-images": "node extract-pdf-images.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^19.2.0",
