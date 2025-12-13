@@ -2378,6 +2378,60 @@ function ProgressBar({ value }) {
   );
 }
 
+// ------------------ КОМПОНЕНТЫ ------------------
+
+function BackgroundMusic() {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch(() => {
+        // Автовоспроизведение может быть заблокировано браузером
+      });
+    }
+  }, []);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (video) {
+      if (isPlaying) {
+        video.pause();
+      } else {
+        video.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  return (
+    <div className="background-music">
+      <div className="background-music-container">
+        <video
+          ref={videoRef}
+          src="/media/C-418 Aria Math 1 hour handpan cover [get.gt].mp4"
+          loop
+          muted={false}
+          className="background-music-video"
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+        />
+        <div className="background-music-label">
+          <span>🎵 Музыка для учебы</span>
+          <button
+            onClick={togglePlay}
+            className="background-music-toggle"
+            title={isPlaying ? "Пауза" : "Воспроизвести"}
+          >
+            {isPlaying ? "⏸" : "▶"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Header({ currentTitle, progress, onPrev, onNext, hasPrev, hasNext }) {
   return (
     <header className="header">
