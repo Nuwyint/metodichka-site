@@ -1,0 +1,144 @@
+/* Glossary Page Styles */
+.glossary-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.glossary-intro {
+  color: #9ca3af;
+  margin-bottom: 2rem;
+}
+
+.glossary-search {
+  margin-bottom: 2rem;
+}
+
+.glossary-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 8px;
+  color: #e5e7eb;
+  font-size: 1rem;
+}
+
+.glossary-search-input:focus {
+  outline: none;
+  border-color: rgba(129, 140, 248, 0.6);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+}
+
+.glossary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.glossary-group {
+  margin-bottom: 2rem;
+}
+
+.glossary-letter {
+  font-size: 2rem;
+  color: #818cf8;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(129, 140, 248, 0.3);
+}
+
+.glossary-terms {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.glossary-term-card {
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.glossary-term-card:hover {
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(129, 140, 248, 0.4);
+  transform: translateY(-2px);
+}
+
+.term-name {
+  font-size: 1.1rem;
+  color: #a5b4fc;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.term-definition {
+  margin: 0;
+  color: #d1d5db;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.glossary-empty {
+  text-align: center;
+  padding: 3rem;
+  color: #9ca3af;
+}
+
+/* Tooltip Styles */
+.tooltip-wrapper {
+  position: relative;
+  display: inline;
+}
+
+.tooltip-trigger {
+  color: #a5b4fc;
+  text-decoration: underline;
+  text-decoration-color: rgba(165, 180, 252, 0.4);
+  cursor: help;
+  border-bottom: 1px dotted rgba(165, 180, 252, 0.6);
+}
+
+.tooltip-content {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(129, 140, 248, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 250px;
+  max-width: 350px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(129, 140, 248, 0.5);
+}
+
+.tooltip-term {
+  font-weight: 600;
+  color: #a5b4fc;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.tooltip-definition {
+  color: #d1d5db;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+

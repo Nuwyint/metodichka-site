@@ -2,6 +2,7 @@
 @import "./styles/read.css";
 @import "./styles/reader.css";
 @import "./styles/search.css";
+@import "./styles/glossary.css";
 
 *,
 *::before,

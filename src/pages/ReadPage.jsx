@@ -3,6 +3,7 @@ import { handbook } from "../data/handbook";
 import { getNextSection, getPrevSection, generateAnchorId } from "../utils/navigation";
 import AnchorLink from "../components/reader/AnchorLink";
 import PrevNextNav from "../components/reader/PrevNextNav";
+import TextWithTooltips from "../components/reader/TextWithTooltips";
 import "../styles/read.css";
 
 export default function ReadPage() {
@@ -74,7 +75,11 @@ export default function ReadPage() {
 
             return (
               <div key={idx} className="block" id={blockId || undefined}>
-                {block.type === "text" && <p>{block.content}</p>}
+                {block.type === "text" && (
+                  <p>
+                    <TextWithTooltips text={block.content} />
+                  </p>
+                )}
                 {block.type === "heading" && (
                   <AnchorLink id={blockId} title={block.content} level={block.level || 3} />
                 )}
@@ -82,13 +87,17 @@ export default function ReadPage() {
                   block.listType === "ordered" ? (
                     <ol>
                       {block.items.map((item, i) => (
-                        <li key={i}>{item}</li>
+                        <li key={i}>
+                          <TextWithTooltips text={item} />
+                        </li>
                       ))}
                     </ol>
                   ) : (
                     <ul>
                       {block.items.map((item, i) => (
-                        <li key={i}>{item}</li>
+                        <li key={i}>
+                          <TextWithTooltips text={item} />
+                        </li>
                       ))}
                     </ul>
                   )
