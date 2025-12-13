@@ -460,7 +460,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/interface-map.png",
+        src: "/media/ui-map.jpg",
         alt: "Примеры карт интерфейса",
         caption: "Рис. 8. Примеры карт интерфейса",
       },
@@ -530,7 +530,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/flat-design.png",
+        src: "/media/flatdesign.png",
         alt: "Пример плоского дизайна",
         caption: "Рис. 9. Flat Design",
       },
@@ -552,7 +552,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/material-design.png",
+        src: "/media/material-design-ui.png",
         alt: "Пример материального дизайна",
         caption: "Рис. 10. Material Design",
       },
@@ -574,7 +574,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/minimal-layout.png",
+        src: "/media/minimalistic.png",
         alt: "Минималистичный и интуитивный макет",
         caption: "Рис. 11. Минималистичный и интуитивный макет",
       },
@@ -596,7 +596,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/pictograms.png",
+        src: "/media/pictocgram.png",
         alt: "Пиктограммы часто используемых операций",
         caption: "Рис. 12. Пиктограммы часто используемых операций",
       },
@@ -621,7 +621,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/responsive-design.png",
+        src: "/media/primer-design.jpg",
         alt: "Пример отображения GUI на разных устройствах",
         caption: "Рис. 13. Пример отображения GUI на разных устройствах",
       },
