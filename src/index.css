@@ -167,6 +167,11 @@ body {
 
 .sidebar {
   padding: 14px 14px 20px 14px;
+  position: sticky;
+  top: 14px;
+  align-self: start;
+  max-height: calc(100vh - 28px);
+  overflow-y: auto;
 }
 
 .sidebar-card {
@@ -634,7 +639,7 @@ body {
 /* ---------------- ИНТЕРАКТИВНЫЕ ПЛАШКИ ---------------- */
 
 .interactive-panel {
-  position: fixed;
+  position: absolute;
   width: 260px;
   background: radial-gradient(
     circle at top left,
@@ -649,8 +654,7 @@ body {
   z-index: 15;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-50%);
-  transition: top 0.1s ease-out, opacity 0.3s ease-out;
+  transform: translateY(-40%); /* стартовая позиция чуть выше */
   /* top задаём из React через style={{ top }} */
 }
 

@@ -2410,14 +2410,20 @@ function App() {
       // Обрабатываем все плашки из конфига
       Object.entries(cfg).forEach(([key, panelCfg]) => {
         if (panelCfg && typeof panelCfg === 'object' && panelCfg.trigger !== undefined) {
-          if (p > (panelCfg.trigger ?? 30)) {
-            const offset = panelCfg.offset ?? 0.4;
-            // Для fixed позиционирования: позиция относительно viewport
-            const top = window.innerHeight * offset;
-            newPositions[key] = top;
+          // Если плашка еще не была показана и достигли триггера - показываем её один раз
+          const currentPosition = panelPositions[key];
+          if (currentPosition === null || currentPosition === undefined) {
+            if (p > (panelCfg.trigger ?? 30)) {
+              const offset = panelCfg.offset ?? 0.4;
+              // Для absolute позиционирования: позиция относительно документа
+              const top = scrollTop + window.innerHeight * offset;
+              newPositions[key] = top;
+            } else {
+              newPositions[key] = null;
+            }
           } else {
-            // Если не достигли триггера, скрываем плашку
-            newPositions[key] = null;
+            // Плашка уже показана - сохраняем её позицию
+            newPositions[key] = currentPosition;
           }
         }
       });
