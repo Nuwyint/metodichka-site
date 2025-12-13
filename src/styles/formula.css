@@ -1,0 +1,20 @@
+/* Formula Styles */
+.formula-block {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  border-radius: 8px;
+  text-align: center;
+  overflow-x: auto;
+}
+
+.formula-block .katex {
+  font-size: 1.1em;
+}
+
+/* Inline formulas */
+.katex {
+  color: #e5e7eb;
+}
+

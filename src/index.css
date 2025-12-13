@@ -3,6 +3,7 @@
 @import "./styles/reader.css";
 @import "./styles/search.css";
 @import "./styles/glossary.css";
+@import "./styles/formula.css";
 
 *,
 *::before,

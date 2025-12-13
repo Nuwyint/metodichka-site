@@ -4,6 +4,7 @@ import { getNextSection, getPrevSection, generateAnchorId } from "../utils/navig
 import AnchorLink from "../components/reader/AnchorLink";
 import PrevNextNav from "../components/reader/PrevNextNav";
 import TextWithTooltips from "../components/reader/TextWithTooltips";
+import FormulaBlock from "../components/reader/FormulaBlock";
 import "../styles/read.css";
 
 export default function ReadPage() {
@@ -107,6 +108,9 @@ export default function ReadPage() {
                     <img src={block.src} alt={block.alt} />
                     {block.caption && <figcaption>{block.caption}</figcaption>}
                   </figure>
+                )}
+                {block.type === "formula" && (
+                  <FormulaBlock formula={block.content} inline={block.inline} />
                 )}
               </div>
             );
