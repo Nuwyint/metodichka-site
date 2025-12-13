@@ -2272,13 +2272,6 @@ function ImageComparisonSlider({ beforeSrc, afterSrc, alt, caption }) {
     setSliderPosition(percentage);
   };
 
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      e.preventDefault();
-      updateSliderPosition(e);
-    }
-  };
-
   const handleMouseDown = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -2290,18 +2283,24 @@ function ImageComparisonSlider({ beforeSrc, afterSrc, alt, caption }) {
   };
 
   useEffect(() => {
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-      document.body.style.cursor = "col-resize";
-      document.body.style.userSelect = "none";
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-        document.body.style.cursor = "";
-        document.body.style.userSelect = "";
-      };
-    }
+    if (!isDragging) return;
+
+    const handleMouseMove = (e) => {
+      e.preventDefault();
+      updateSliderPosition(e);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+    
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
   }, [isDragging]);
 
   return (
