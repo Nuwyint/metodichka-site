@@ -2293,27 +2293,42 @@ function App() {
       const leftCfg = cfg.left;
       const rightCfg = cfg.right;
 
-      // левая плашка
-      if (leftCfg && leftTop === null && p > (leftCfg.trigger ?? 30)) {
-        const offset = leftCfg.offset ?? 0.4;
-        const top = scrollTop + window.innerHeight * offset;
-        setLeftTop(top);
+      // левая плашка - обновляем позицию при каждом скролле
+      if (leftCfg) {
+        if (p > (leftCfg.trigger ?? 30)) {
+          const offset = leftCfg.offset ?? 0.4;
+          // Для fixed позиционирования: позиция относительно viewport
+          // Плашка следует за скроллом, оставаясь на определенном расстоянии от верха окна
+          const top = window.innerHeight * offset;
+          setLeftTop(top);
+        } else {
+          // Если не достигли триггера, скрываем плашку
+          setLeftTop(null);
+        }
+      } else {
+        setLeftTop(null);
       }
 
-      // правая плашка
-      if (rightCfg && rightTop === null && p > (rightCfg.trigger ?? 70)) {
-        const offset = rightCfg.offset ?? 0.4;
-        const top = scrollTop + window.innerHeight * offset;
-        setRightTop(top);
+      // правая плашка - обновляем позицию при каждом скролле
+      if (rightCfg) {
+        if (p > (rightCfg.trigger ?? 70)) {
+          const offset = rightCfg.offset ?? 0.4;
+          // Для fixed позиционирования: позиция относительно viewport
+          const top = window.innerHeight * offset;
+          setRightTop(top);
+        } else {
+          // Если не достигли триггера, скрываем плашку
+          setRightTop(null);
+        }
+      } else {
+        setRightTop(null);
       }
-       
-    
     };
 
     handleScroll(); // посчитать сразу при монтировании
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentId, leftTop, rightTop]);
+  }, [currentId]);
 
 
   const currentIndex = sections.findIndex((s) => s.id === currentId);

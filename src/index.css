@@ -593,7 +593,7 @@ body {
 /* ---------------- ИНТЕРАКТИВНЫЕ ПЛАШКИ ---------------- */
 
 .interactive-panel {
-  position: absolute;
+  position: fixed;
   width: 260px;
   background: radial-gradient(
     circle at top left,
@@ -608,7 +608,8 @@ body {
   z-index: 15;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-40%); /* стартовая позиция чуть выше */
+  transform: translateY(-50%);
+  transition: top 0.1s ease-out, opacity 0.3s ease-out;
   /* top задаём из React через style={{ top }} */
 }
 
@@ -632,7 +633,7 @@ body {
 @keyframes panel-fade-in {
   from {
     opacity: 0;
-    transform: translateY(-30%);
+    transform: translateY(-45%);
   }
   to {
     opacity: 1;
