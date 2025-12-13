@@ -74,13 +74,10 @@ export function searchHandbook(query) {
 
 /**
  * Подсветка совпадений в тексте
+ * Возвращает массив объектов для рендеринга в React компоненте
  */
 export function highlightMatches(text, query) {
-  if (!query || !text) return text;
-  
-  const normalizedQuery = normalizeText(query);
-  const normalizedText = normalizeText(text);
-  const regex = new RegExp(`(${normalizedQuery})`, 'gi');
+  if (!query || !text) return [{ type: 'text', content: text }];
   
   // Находим все совпадения с учетом регистра
   const matches = [];
@@ -95,26 +92,32 @@ export function highlightMatches(text, query) {
     });
   }
 
-  if (matches.length === 0) return text;
+  if (matches.length === 0) return [{ type: 'text', content: text }];
 
   // Создаем массив частей текста с подсветкой
   const parts = [];
   let lastIndex = 0;
 
-  matches.forEach((match) => {
+  matches.forEach((match, idx) => {
     if (match.start > lastIndex) {
-      parts.push(text.substring(lastIndex, match.start));
+      parts.push({
+        type: 'text',
+        content: text.substring(lastIndex, match.start)
+      });
     }
-    parts.push(
-      <mark key={match.start} className="search-highlight">
-        {match.text}
-      </mark>
-    );
+    parts.push({
+      type: 'highlight',
+      content: match.text,
+      key: match.start
+    });
     lastIndex = match.end;
   });
 
   if (lastIndex < text.length) {
-    parts.push(text.substring(lastIndex));
+    parts.push({
+      type: 'text',
+      content: text.substring(lastIndex)
+    });
   }
 
   return parts;

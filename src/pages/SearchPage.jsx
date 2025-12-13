@@ -45,11 +45,24 @@ export default function SearchPage() {
                 </Link>
               </h3>
               <div className="result-snippets">
-                {result.matches.slice(0, 3).map((match, matchIdx) => (
-                  <p key={matchIdx} className="result-snippet">
-                    ...{highlightMatches(match.snippet, query)}...
-                  </p>
-                ))}
+                {result.matches.slice(0, 3).map((match, matchIdx) => {
+                  const highlighted = highlightMatches(match.snippet, query);
+                  return (
+                    <p key={matchIdx} className="result-snippet">
+                      ...
+                      {highlighted.map((part, partIdx) => 
+                        part.type === 'highlight' ? (
+                          <mark key={partIdx} className="search-highlight">
+                            {part.content}
+                          </mark>
+                        ) : (
+                          <span key={partIdx}>{part.content}</span>
+                        )
+                      )}
+                      ...
+                    </p>
+                  );
+                })}
               </div>
             </div>
           ))}
