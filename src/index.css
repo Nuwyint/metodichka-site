@@ -566,6 +566,7 @@ body {
   width: 100%;
   height: auto;
   border-radius: 14px;
+  pointer-events: none;
 }
 
 .image-comparison-before-wrapper {
@@ -575,13 +576,15 @@ body {
   height: 100%;
   overflow: hidden;
   border-radius: 14px 0 0 14px;
+  will-change: width;
 }
 
 .image-comparison-before {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
+  object-position: left;
   border-radius: 14px;
 }
 

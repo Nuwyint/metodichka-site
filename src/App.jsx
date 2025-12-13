@@ -2264,16 +2264,25 @@ function ImageComparisonSlider({ beforeSrc, afterSrc, alt, caption }) {
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
 
-  const handleMouseMove = (e) => {
-    if (!isDragging || !containerRef.current) return;
+  const updateSliderPosition = (e) => {
+    if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
     setSliderPosition(percentage);
   };
 
-  const handleMouseDown = () => {
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      e.preventDefault();
+      updateSliderPosition(e);
+    }
+  };
+
+  const handleMouseDown = (e) => {
+    e.preventDefault();
     setIsDragging(true);
+    updateSliderPosition(e);
   };
 
   const handleMouseUp = () => {
@@ -2284,9 +2293,13 @@ function ImageComparisonSlider({ beforeSrc, afterSrc, alt, caption }) {
     if (isDragging) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
       return () => {
         window.removeEventListener("mousemove", handleMouseMove);
         window.removeEventListener("mouseup", handleMouseUp);
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
       };
     }
   }, [isDragging]);
@@ -2296,8 +2309,6 @@ function ImageComparisonSlider({ beforeSrc, afterSrc, alt, caption }) {
       <div
         ref={containerRef}
         className="image-comparison-container"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseUp}
       >
         <img
           src={afterSrc}
