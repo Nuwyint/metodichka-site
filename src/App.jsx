@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./index.css";
 
 // ------------------ ДАННЫЕ РАЗДЕЛОВ ------------------
@@ -1134,7 +1134,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris18.1.png",
+        src: "/media/17.png",
         alt: "Пример сцены для визуализации",
         caption: "Рис. 17. Пример сцены для визуализации",
       },
@@ -1167,10 +1167,11 @@ plt.show()`,
       },
       {
         type: "media",
-        mediaType: "image",
-        src: "/media/ris18.2.png",
-        alt: "Пример использования освещения для передачи времени суток и настроения сцены",
-        caption: "Рис. 18. Пример использования освещения для передачи времени суток и настроения сцены",
+        mediaType: "image-comparison",
+        beforeSrc: "/media/ris18.1.png",
+        afterSrc: "/media/ris18.2.png",
+        alt: "Сравнение использования освещения для передачи времени суток и настроения сцены",
+        caption: "Рис. 18. Пример использования освещения для передачи времени суток и настроения сцены (перетащите ползунок для сравнения)",
       },
       {
         type: "media",
@@ -2258,6 +2259,78 @@ const interactiveConfig = {
 
 // ------------------ КОМПОНЕНТЫ ------------------
 
+function ImageComparisonSlider({ beforeSrc, afterSrc, alt, caption }) {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!isDragging || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    setSliderPosition(percentage);
+  };
+
+  const handleMouseDown = () => {
+    setIsDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+      };
+    }
+  }, [isDragging]);
+
+  return (
+    <figure className="content-block content-block--media">
+      <div
+        ref={containerRef}
+        className="image-comparison-container"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseUp}
+      >
+        <img
+          src={afterSrc}
+          alt={alt}
+          className="image-comparison-after"
+        />
+        <div
+          className="image-comparison-before-wrapper"
+          style={{ width: `${sliderPosition}%` }}
+        >
+          <img
+            src={beforeSrc}
+            alt={alt}
+            className="image-comparison-before"
+          />
+        </div>
+        <div
+          className="image-comparison-slider"
+          style={{ left: `${sliderPosition}%` }}
+          onMouseDown={handleMouseDown}
+        >
+          <div className="image-comparison-slider-handle"></div>
+        </div>
+      </div>
+      {caption && (
+        <figcaption className="content-media-caption">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
 function ProgressBar({ value }) {
   const clamped = Math.max(0, Math.min(100, value || 0));
   return (
@@ -2439,6 +2512,19 @@ function SectionBody({ section }) {
                   </figcaption>
                 )}
               </figure>
+            );
+          }
+
+          // 2.5) Слайдер сравнения изображений
+          if (block.mediaType === "image-comparison") {
+            return (
+              <ImageComparisonSlider
+                key={idx}
+                beforeSrc={block.beforeSrc}
+                afterSrc={block.afterSrc}
+                alt={block.alt || ""}
+                caption={block.caption}
+              />
             );
           }
 
