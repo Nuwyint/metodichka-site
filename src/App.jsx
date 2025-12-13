@@ -2930,6 +2930,7 @@ function App() {
 
   return (
     <div className="app">
+      <BackgroundMusic />
       <Header
         currentTitle={currentSection.title}
         progress={totalProgress}
