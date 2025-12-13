@@ -1,0 +1,158 @@
+/* Layout Styles */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Header */
+.app-header {
+  background: #1e1b4b;
+  border-bottom: 1px solid rgba(129, 140, 248, 0.3);
+  padding: 1rem 2rem;
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-logo h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #e5e7eb;
+}
+
+.header-logo {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.header-nav a {
+  color: #a5b4fc;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.header-nav a:hover {
+  color: #818cf8;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background: #0f172a;
+  border-right: 1px solid rgba(129, 140, 248, 0.2);
+  padding: 1.5rem;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 80px);
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  margin: 0 0 1.5rem 0;
+  color: #e5e7eb;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-chapter {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-chapter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar-chapter-header:hover {
+  background: rgba(129, 140, 248, 0.1);
+}
+
+.sidebar-chapter-header.active {
+  background: rgba(129, 140, 248, 0.2);
+}
+
+.sidebar-chapter-link {
+  flex: 1;
+  color: #e5e7eb;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.sidebar-chapter-link:hover {
+  color: #a5b4fc;
+}
+
+.sidebar-toggle {
+  color: #818cf8;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  user-select: none;
+}
+
+.sidebar-sections {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 1rem;
+}
+
+.sidebar-sections li {
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-section-link {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  color: #a5b4fc;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.sidebar-section-link:hover {
+  background: rgba(129, 140, 248, 0.1);
+  color: #c7d2fe;
+}
+
+.sidebar-section-link.active {
+  background: rgba(129, 140, 248, 0.2);
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
