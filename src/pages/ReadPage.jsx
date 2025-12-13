@@ -1,5 +1,8 @@
 import { useParams, Link } from "react-router-dom";
 import { handbook } from "../data/handbook";
+import { getNextSection, getPrevSection, generateAnchorId } from "../utils/navigation";
+import AnchorLink from "../components/reader/AnchorLink";
+import PrevNextNav from "../components/reader/PrevNextNav";
 import "../styles/read.css";
 
 export default function ReadPage() {
@@ -19,9 +22,8 @@ export default function ReadPage() {
 
   // Если sectionId указан, показываем конкретный раздел
   // Иначе показываем первый раздел главы
-  const section = sectionId 
-    ? chapter.sections.find((s) => s.id === sectionId)
-    : chapter.sections[0];
+  const currentSectionId = sectionId || chapter.sections[0]?.id;
+  const section = chapter.sections.find((s) => s.id === currentSectionId);
 
   if (!section) {
     return (
@@ -32,6 +34,10 @@ export default function ReadPage() {
       </div>
     );
   }
+
+  // Навигация
+  const next = getNextSection(chapterId, currentSectionId);
+  const prev = getPrevSection(chapterId, currentSectionId);
 
   // Хлебные крошки
   const breadcrumbs = [
@@ -59,39 +65,47 @@ export default function ReadPage() {
       {chapter.short && <p className="chapter-short">{chapter.short}</p>}
       
       <article className="section-content">
-        <h2 id={section.id}>{section.title}</h2>
+        <AnchorLink id={section.id} title={section.title} />
         <div className="section-blocks">
-          {section.blocks.map((block, idx) => (
-            <div key={idx} className="block">
-              {block.type === "text" && <p>{block.content}</p>}
-              {block.type === "heading" && (
-                <h3>{block.content}</h3>
-              )}
-              {block.type === "list" && (
-                block.listType === "ordered" ? (
-                  <ol>
-                    {block.items.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ol>
-                ) : (
-                  <ul>
-                    {block.items.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                )
-              )}
-              {block.type === "image" && (
-                <figure>
-                  <img src={block.src} alt={block.alt} />
-                  {block.caption && <figcaption>{block.caption}</figcaption>}
-                </figure>
-              )}
-            </div>
-          ))}
+          {section.blocks.map((block, idx) => {
+            const blockId = block.type === "heading" 
+              ? generateAnchorId(block.content)
+              : null;
+
+            return (
+              <div key={idx} className="block" id={blockId || undefined}>
+                {block.type === "text" && <p>{block.content}</p>}
+                {block.type === "heading" && (
+                  <AnchorLink id={blockId} title={block.content} />
+                )}
+                {block.type === "list" && (
+                  block.listType === "ordered" ? (
+                    <ol>
+                      {block.items.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ol>
+                  ) : (
+                    <ul>
+                      {block.items.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  )
+                )}
+                {block.type === "image" && (
+                  <figure>
+                    <img src={block.src} alt={block.alt} />
+                    {block.caption && <figcaption>{block.caption}</figcaption>}
+                  </figure>
+                )}
+              </div>
+            );
+          })}
         </div>
       </article>
+
+      <PrevNextNav prev={prev} next={next} />
     </div>
   );
 }
