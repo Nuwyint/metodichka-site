@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
 
 export default function Header() {
   return (
@@ -14,6 +15,7 @@ export default function Header() {
           <Link to="/tests">Тесты</Link>
         </nav>
       </div>
+      <ProgressBar />
     </header>
   );
 }

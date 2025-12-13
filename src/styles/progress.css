@@ -1,0 +1,32 @@
+/* Progress Bar Styles */
+.progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(15, 23, 42, 0.5);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #818cf8, #a5b4fc);
+  transition: width 0.1s ease-out;
+  box-shadow: 0 0 10px rgba(129, 140, 248, 0.5);
+}
+
+/* Home Page Continue Reading */
+.continue-reading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.continue-info {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  margin: 0;
+}
+

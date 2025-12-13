@@ -6,6 +6,7 @@
 @import "./styles/formula.css";
 @import "./styles/code.css";
 @import "./styles/settings.css";
+@import "./styles/progress.css";
 
 *,
 *::before,

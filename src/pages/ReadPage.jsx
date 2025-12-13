@@ -1,6 +1,8 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect } from "react";
 import { handbook } from "../data/handbook";
 import { getNextSection, getPrevSection, generateAnchorId } from "../utils/navigation";
+import { saveReadingProgress } from "../utils/progress";
 import AnchorLink from "../components/reader/AnchorLink";
 import PrevNextNav from "../components/reader/PrevNextNav";
 import TextWithTooltips from "../components/reader/TextWithTooltips";
@@ -41,6 +43,11 @@ export default function ReadPage() {
   // Навигация
   const next = getNextSection(chapterId, currentSectionId);
   const prev = getPrevSection(chapterId, currentSectionId);
+
+  // Сохраняем прогресс чтения
+  useEffect(() => {
+    saveReadingProgress(chapterId, currentSectionId);
+  }, [chapterId, currentSectionId]);
 
   // Хлебные крошки
   const breadcrumbs = [

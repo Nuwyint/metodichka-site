@@ -1,8 +1,29 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { handbook } from "../data/handbook";
+import { getLastReadSection } from "../utils/progress";
 
 export default function HomePage() {
   const firstChapter = handbook[1]; // Первая глава после введения
+  const [lastRead, setLastRead] = useState(null);
+
+  useEffect(() => {
+    const progress = getLastReadSection();
+    if (progress) {
+      const chapter = handbook.find((ch) => ch.id === progress.chapterId);
+      if (chapter) {
+        const section = chapter.sections.find((s) => s.id === progress.sectionId);
+        if (section) {
+          setLastRead({
+            chapterId: progress.chapterId,
+            sectionId: progress.sectionId,
+            chapterTitle: chapter.title,
+            sectionTitle: section.title,
+          });
+        }
+      }
+    }
+  }, []);
 
   return (
     <div className="home-page">
@@ -11,9 +32,23 @@ export default function HomePage() {
         <p className="home-subtitle">
           Проектирование и разработка мультимедийного контента и пользовательского интерфейса
         </p>
-        <Link to={`/read/${firstChapter?.id || 'intro'}`} className="btn btn-primary">
-          Начать изучение
-        </Link>
+        {lastRead ? (
+          <div className="continue-reading">
+            <Link
+              to={`/read/${lastRead.chapterId}/${lastRead.sectionId}`}
+              className="btn btn-primary"
+            >
+              Продолжить чтение
+            </Link>
+            <p className="continue-info">
+              Последний прочитанный раздел: {lastRead.sectionTitle}
+            </p>
+          </div>
+        ) : (
+          <Link to={`/read/${firstChapter?.id || 'intro'}`} className="btn btn-primary">
+            Начать изучение
+          </Link>
+        )}
       </div>
 
       <div className="home-content">
