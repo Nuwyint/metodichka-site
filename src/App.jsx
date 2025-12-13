@@ -1272,6 +1272,12 @@ plt.show()`,
           </>
         ),
       },
+      {
+        type: "media",
+        mediaType: "video",
+        src: "/media/Blender Tutorial - Creating a Stormy Ocean [get.gt].mp4",
+        caption: "Пример создания океана в Blender",
+      },
     ],
   },
   {
