@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { handbook } from "../data/handbook";
 import { getNextSection, getPrevSection, generateAnchorId } from "../utils/navigation";
 import { saveReadingProgress } from "../utils/progress";
@@ -8,10 +8,12 @@ import PrevNextNav from "../components/reader/PrevNextNav";
 import TextWithTooltips from "../components/reader/TextWithTooltips";
 import FormulaBlock from "../components/reader/FormulaBlock";
 import CodeBlock from "../components/reader/CodeBlock";
+import Quiz from "../components/reader/Quiz";
 import "../styles/read.css";
 
 export default function ReadPage() {
   const { chapterId, sectionId } = useParams();
+  const [quizResults, setQuizResults] = useState({});
   
   const chapter = handbook.find((ch) => ch.id === chapterId);
   
@@ -123,11 +125,31 @@ export default function ReadPage() {
                 {block.type === "code" && (
                   <CodeBlock code={block.content} language={block.language} />
                 )}
+                {block.type === "quiz" && (
+                  <Quiz
+                    question={block.question}
+                    options={block.options}
+                    correctIndex={block.correctIndex}
+                    explanation={block.explanation}
+                  />
+                )}
               </div>
             );
           })}
         </div>
       </article>
+
+      {/* Подсчет результатов тестов в разделе */}
+      {section.blocks.filter((b) => b.type === "quiz").length > 0 && (
+        <div className="section-quiz-summary">
+          <p>
+            В этом разделе {section.blocks.filter((b) => b.type === "quiz").length}{" "}
+            {section.blocks.filter((b) => b.type === "quiz").length === 1
+              ? "тест"
+              : "теста"}
+          </p>
+        </div>
+      )}
 
       <PrevNextNav prev={prev} next={next} />
     </div>
