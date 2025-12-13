@@ -167,6 +167,11 @@ body {
 
 .sidebar {
   padding: 14px 14px 20px 14px;
+  position: sticky;
+  top: 14px;
+  align-self: start;
+  max-height: calc(100vh - 28px);
+  overflow-y: auto;
 }
 
 .sidebar-card {
@@ -227,15 +232,50 @@ body {
 }
 
 .sidebar-item-index {
-  width: 26px;
-  height: 26px;
+  width: 40px;
+  height: 40px;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.45);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.sidebar-item-icon {
+  position: absolute;
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.5;
+  z-index: 0;
+  filter: blur(0.5px);
+}
+
+.sidebar-item-number {
+  position: relative;
+  z-index: 2;
   font-size: 11px;
+  font-weight: 700;
   color: var(--text-muted);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.sidebar-item--active .sidebar-item-index {
+  border-color: rgba(216, 180, 254, 0.9);
+  background: rgba(30, 64, 175, 0.4);
+}
+
+.sidebar-item--active .sidebar-item-number {
+  color: #f9fafb;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.sidebar-item--active .sidebar-item-icon {
+  opacity: 0.7;
 }
 
 .sidebar-item--active .sidebar-item-index {
@@ -302,6 +342,44 @@ body {
   margin: 8px 0 12px;
 }
 
+.content-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.content-body thead {
+  background: rgba(30, 64, 175, 0.2);
+}
+
+.content-body th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.content-body td {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.content-body tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.content-body tbody tr:hover {
+  background: rgba(30, 64, 175, 0.1);
+}
+
 .content-block {
   border-radius: 18px;
   border: 1px solid var(--border-subtle);
@@ -317,7 +395,18 @@ body {
 .content-block p + p {
   margin-top: 10px; /* визуально чуть больше разрыв между абзацами */
 }
+.content-block--quiz {
+  background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+  border-color: rgba(129, 140, 248, 0.7);
+}
 
+.content-block--quiz .ip-title {
+  font-size: 1rem;
+}
+
+.content-block--quiz .ip-btn {
+  margin-top: 1rem;
+}
 .content-block--media {
   max-width: 640px;
   margin: 8px auto 16px;
@@ -331,13 +420,243 @@ body {
   border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
+.font-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.font-card-header {
+  text-align: center;
+}
+
+.font-card-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.font-card-sub {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.font-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+
+.font-card-col {
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+}
+
+.font-card-label {
+  margin: 0 0 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.font-card-desc {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.font-card-sample {
+  margin: 0;
+  font-size: 15px;
+}
+
+/* семейства шрифтов */
+
+.font-serif {
+  font-family: "Georgia", "Times New Roman", "Garamond", serif;
+}
+
+.font-sans {
+  font-family: "Segoe UI", "Arial", "Verdana", sans-serif;
+}
+
+.font-script {
+  font-family: "Lucida Handwriting", "Brush Script MT", "Segoe Script", cursive;
+}
+
+.font-mono {
+  font-family: "Consolas", "Courier New", "Lucida Console", monospace;
+}
+
+.font-decor {
+  font-family: "Impact", "Stencil", "Copperplate", fantasy;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 640px) {
+  .font-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hover-image-card .content-media-img {
+  margin-bottom: 0; /* подпись отдельно под блоком */
+}
+
+/* карточка с пасхалкой RGB/CMYK */
+/* --- Пасхалка: RGB/CMYK → мем --- */
+
+.hover-image-wrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* базовая картинка – как была, на всю ширину */
+.hover-image {
+  display: block;
+  border-radius: inherit;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hover-image--base {
+  width: 100%;
+}
+
+/* мем – поменьше, по центру, без растяжения и обрезания */
+.hover-image--hover {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.02);
+  width: auto;
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/* при наведении показываем мем, прячем базу */
+.hover-image-wrapper:hover .hover-image--hover {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.hover-image-wrapper:hover .hover-image--base {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* Слайдер сравнения изображений */
+.image-comparison-container {
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: col-resize;
+  user-select: none;
+}
+
+.image-comparison-after {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.image-comparison-before-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 14px 0 0 14px;
+  will-change: width;
+}
+
+.image-comparison-before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left;
+  border-radius: 14px;
+}
+
+.image-comparison-slider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: rgba(129, 140, 248, 0.8);
+  cursor: col-resize;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.image-comparison-slider-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(129, 140, 248, 0.95);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-comparison-slider-handle::before,
+.image-comparison-slider-handle::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.image-comparison-slider-handle::before {
+  left: 8px;
+  border-width: 6px 8px 6px 0;
+  border-color: transparent rgba(255, 255, 255, 0.9) transparent transparent;
+}
+
+.image-comparison-slider-handle::after {
+  right: 8px;
+  border-width: 6px 0 6px 8px;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
+}
+
+.image-comparison-container:hover .image-comparison-slider {
+  background: rgba(129, 140, 248, 1);
+}
+
+.image-comparison-container:hover .image-comparison-slider-handle {
+  background: rgba(129, 140, 248, 1);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
 
 .content-media-img,
-.content-media-video {
+.content-media-video,
+.content-media-audio {
   width: 100%;
   border-radius: 14px;
   display: block;
   margin-bottom: 6px;
+}
+
+.content-media-audio {
+  margin: 16px 0;
 }
 
 .content-media-caption {
@@ -369,6 +688,47 @@ body {
   color: #f9fafb;
 }
 
+/* Блоки кода */
+.content-block--code {
+  margin: 24px 0;
+}
+
+.code-block {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  overflow-x: auto;
+  margin: 0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e5e7eb;
+}
+
+.code-block code {
+  display: block;
+  color: inherit;
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+/* Стили для inline кода в тексте */
+.content-body code {
+  background: rgba(129, 140, 248, 0.15);
+  color: #a5b4fc;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  border: 1px solid rgba(129, 140, 248, 0.2);
+}
+
 .important::before {
   content: "• ";
   color: var(--accent);
@@ -393,9 +753,10 @@ body {
   z-index: 15;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease-out;
+  transform: translateY(-40%); /* стартовая позиция чуть выше */
   /* top задаём из React через style={{ top }} */
 }
+
 /* ЛЕВАЯ — правее сайдбара (~290px ширина сайдбара) */
 .interactive-panel--left {
   left: 320px; /* подгони, если нужно */
@@ -406,19 +767,24 @@ body {
   right: 14px;
 }
 
-
+/* Когда включаем visible — запускается анимация появления */
 .interactive-panel--visible {
-  opacity: 1;
   pointer-events: auto;
+  animation: panel-fade-in 0.45s ease-out forwards;
 }
 
-.interactive-panel--left.interactive-panel--visible {
-  transform: translate(0, -50%);
+/* КАДРЫ АНИМАЦИИ */
+@keyframes panel-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-45%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
 }
 
-.interactive-panel--right.interactive-panel--visible {
-  transform: translate(0, -50%);
-}
 
 .ip-title {
   margin: 0 0 6px;
