@@ -2383,15 +2383,28 @@ function ProgressBar({ value }) {
 function BackgroundMusic() {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(() => {
+    const saved = localStorage.getItem("background-music-volume");
+    return saved ? parseFloat(saved) : 0.5;
+  });
 
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
+      video.volume = volume;
       video.play().catch(() => {
         // Автовоспроизведение может быть заблокировано браузером
       });
     }
   }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.volume = volume;
+      localStorage.setItem("background-music-volume", volume.toString());
+    }
+  }, [volume]);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -2402,6 +2415,14 @@ function BackgroundMusic() {
         video.play();
       }
       setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (videoRef.current) {
+      videoRef.current.volume = newVolume;
     }
   };
 
@@ -2426,6 +2447,20 @@ function BackgroundMusic() {
           >
             {isPlaying ? "⏸" : "▶"}
           </button>
+        </div>
+        <div className="background-music-volume">
+          <span className="volume-icon">🔊</span>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+            className="volume-slider"
+            title={`Громкость: ${Math.round(volume * 100)}%`}
+          />
+          <span className="volume-value">{Math.round(volume * 100)}%</span>
         </div>
       </div>
     </div>
