@@ -2911,7 +2911,8 @@ function App() {
     // при переходе на другую главу сбрасываем плашки
     setPanelPositions({});
   }, [currentId]);
-   useEffect(() => {
+   
+  useEffect(() => {
     const handleScroll = () => {
       const doc = document.documentElement;
       const scrollTop = window.scrollY || doc.scrollTop || 0;
@@ -2927,40 +2928,41 @@ function App() {
 
       // конфиг для текущего раздела
       const cfg = interactiveConfig[currentId] || {};
-      const newPositions = {};
+      
+      setPanelPositions((prevPositions) => {
+        const newPositions = {};
 
-      // Обрабатываем все плашки из конфига
-      Object.entries(cfg).forEach(([key, panelCfg]) => {
-        if (panelCfg && typeof panelCfg === 'object' && panelCfg.trigger !== undefined) {
-          // Если плашка еще не была показана и достигли триггера - показываем её один раз
-          const currentPosition = panelPositions[key];
-          if (currentPosition === null || currentPosition === undefined) {
-            if (p > (panelCfg.trigger ?? 30)) {
-              const offset = panelCfg.offset ?? 0.4;
-              // Фиксированная позиция относительно документа - устанавливаем один раз
-        const top = scrollTop + window.innerHeight * offset;
-              newPositions[key] = top;
+        // Обрабатываем все плашки из конфига
+        Object.entries(cfg).forEach(([key, panelCfg]) => {
+          if (panelCfg && typeof panelCfg === 'object' && panelCfg.trigger !== undefined) {
+            // Если плашка еще не была показана и достигли триггера - показываем её один раз
+            const currentPosition = prevPositions[key];
+            if (currentPosition === null || currentPosition === undefined) {
+              if (p > (panelCfg.trigger ?? 30)) {
+                const offset = panelCfg.offset ?? 0.4;
+                // Фиксированная позиция относительно документа - устанавливаем один раз
+                const top = scrollTop + window.innerHeight * offset;
+                newPositions[key] = top;
+              } else {
+                newPositions[key] = null;
+              }
             } else {
-              newPositions[key] = null;
+              // Плашка уже показана - сохраняем её фиксированную позицию (не обновляем)
+              newPositions[key] = currentPosition;
             }
-          } else {
-            // Плашка уже показана - сохраняем её фиксированную позицию (не обновляем)
-            newPositions[key] = currentPosition;
           }
-        }
-      });
+        });
 
-      // Обновляем только если есть изменения
-      const hasChanges = Object.keys(newPositions).some(key => newPositions[key] !== panelPositions[key]);
-      if (hasChanges) {
-        setPanelPositions(newPositions);
-      }
+        // Обновляем только если есть изменения
+        const hasChanges = Object.keys(newPositions).some(key => newPositions[key] !== prevPositions[key]);
+        return hasChanges ? newPositions : prevPositions;
+      });
     };
 
     handleScroll(); // посчитать сразу при монтировании
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentId]);
+  }, [currentId, panelPositions]);
 
 
   const currentIndex = sections.findIndex((s) => s.id === currentId);
