@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import ReadingSettings from "../ui/ReadingSettings";
 
 export default function Layout() {
   return (
@@ -12,6 +13,7 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
+      <ReadingSettings />
     </div>
   );
 }

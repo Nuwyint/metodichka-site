@@ -1,0 +1,224 @@
+/* Reading Settings Styles */
+.reading-settings {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+}
+
+.settings-toggle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(129, 140, 248, 0.2);
+  border: 1px solid rgba(129, 140, 248, 0.4);
+  color: #a5b4fc;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.settings-toggle:hover {
+  background: rgba(129, 140, 248, 0.3);
+  border-color: rgba(129, 140, 248, 0.6);
+  transform: scale(1.1);
+}
+
+.settings-panel {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  width: 300px;
+  background: rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(129, 140, 248, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  padding: 1.5rem;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+.settings-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #e5e7eb;
+}
+
+.settings-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.settings-close:hover {
+  color: #e5e7eb;
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.setting-group label {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.font-size-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.font-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  color: #a5b4fc;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.font-btn:hover:not(:disabled) {
+  background: rgba(129, 140, 248, 0.2);
+  border-color: rgba(129, 140, 248, 0.5);
+}
+
+.font-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.font-size-value {
+  min-width: 50px;
+  text-align: center;
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+.theme-controls,
+.width-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.theme-btn,
+.width-btn {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  background: rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 6px;
+  color: #a5b4fc;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.theme-btn:hover,
+.width-btn:hover {
+  background: rgba(129, 140, 248, 0.2);
+  border-color: rgba(129, 140, 248, 0.5);
+}
+
+.theme-btn.active,
+.width-btn.active {
+  background: rgba(129, 140, 248, 0.3);
+  border-color: rgba(129, 140, 248, 0.6);
+  color: #e5e7eb;
+}
+
+/* Theme and Width CSS Variables */
+[data-theme="light"] {
+  --bg-body: #ffffff;
+  --bg-panel: #f9fafb;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border-subtle: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --bg-body: #020617;
+  --bg-panel: #030712;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border-subtle: #1f2937;
+}
+
+[data-width="narrow"] .main-content {
+  max-width: 600px;
+}
+
+[data-width="normal"] .main-content {
+  max-width: 900px;
+}
+
+[data-width="wide"] .main-content {
+  max-width: 1200px;
+}
+
+/* Font size application */
+:root {
+  --reading-font-size: 1;
+}
+
+.read-page,
+.section-content {
+  font-size: calc(1rem * var(--reading-font-size));
+}
+
+.read-page h1 {
+  font-size: calc(2rem * var(--reading-font-size));
+}
+
+.read-page h2 {
+  font-size: calc(1.75rem * var(--reading-font-size));
+}
+
+.read-page h3 {
+  font-size: calc(1.5rem * var(--reading-font-size));
+}
+

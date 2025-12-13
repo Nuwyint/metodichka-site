@@ -5,6 +5,7 @@
 @import "./styles/glossary.css";
 @import "./styles/formula.css";
 @import "./styles/code.css";
+@import "./styles/settings.css";
 
 *,
 *::before,
