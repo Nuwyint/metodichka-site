@@ -1,0 +1,116 @@
+/* Read Page Styles */
+.read-page {
+  color: #e5e7eb;
+}
+
+.breadcrumbs {
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.breadcrumbs a {
+  color: #a5b4fc;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: #818cf8;
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  margin: 0 0.5rem;
+  color: #6b7280;
+}
+
+.read-page h1 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  color: #e5e7eb;
+}
+
+.chapter-short {
+  font-size: 1.1rem;
+  color: #9ca3af;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.section-content {
+  margin-top: 2rem;
+}
+
+.section-content h2 {
+  font-size: 1.75rem;
+  margin: 2rem 0 1rem 0;
+  color: #e5e7eb;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+.section-content h3 {
+  font-size: 1.5rem;
+  margin: 1.5rem 0 1rem 0;
+  color: #e5e7eb;
+}
+
+.section-blocks {
+  line-height: 1.8;
+}
+
+.section-blocks p {
+  margin: 1rem 0;
+  color: #d1d5db;
+}
+
+.section-blocks ul,
+.section-blocks ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+  color: #d1d5db;
+}
+
+.section-blocks li {
+  margin: 0.5rem 0;
+}
+
+.section-blocks figure {
+  margin: 2rem 0;
+}
+
+.section-blocks img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.section-blocks figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.error-page {
+  text-align: center;
+  padding: 3rem;
+  color: #e5e7eb;
+}
+
+.error-page h2 {
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.error-page a {
+  color: #a5b4fc;
+  text-decoration: none;
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+.error-page a:hover {
+  text-decoration: underline;
+}
+

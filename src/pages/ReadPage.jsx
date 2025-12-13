@@ -1,5 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { handbook } from "../data/handbook";
+import "../styles/read.css";
 
 export default function ReadPage() {
   const { chapterId, sectionId } = useParams();
@@ -11,6 +12,7 @@ export default function ReadPage() {
       <div className="error-page">
         <h2>Раздел не найден</h2>
         <p>Запрошенный раздел не существует.</p>
+        <Link to="/">Вернуться на главную</Link>
       </div>
     );
   }
@@ -26,18 +28,38 @@ export default function ReadPage() {
       <div className="error-page">
         <h2>Раздел не найден</h2>
         <p>Запрошенный раздел не существует в этой главе.</p>
+        <Link to={`/read/${chapterId}`}>Вернуться к главе</Link>
       </div>
     );
   }
 
+  // Хлебные крошки
+  const breadcrumbs = [
+    { label: "Главная", path: "/" },
+    { label: chapter.title, path: `/read/${chapterId}` },
+    { label: section.title, path: null }
+  ];
+
   return (
     <div className="read-page">
+      <nav className="breadcrumbs">
+        {breadcrumbs.map((crumb, idx) => (
+          <span key={idx}>
+            {crumb.path ? (
+              <Link to={crumb.path}>{crumb.label}</Link>
+            ) : (
+              <span>{crumb.label}</span>
+            )}
+            {idx < breadcrumbs.length - 1 && <span className="breadcrumb-separator"> → </span>}
+          </span>
+        ))}
+      </nav>
+
       <h1>{chapter.title}</h1>
       {chapter.short && <p className="chapter-short">{chapter.short}</p>}
       
       <article className="section-content">
-        <h2>{section.title}</h2>
-        {/* TODO: Рендеринг блоков будет в компоненте Reader */}
+        <h2 id={section.id}>{section.title}</h2>
         <div className="section-blocks">
           {section.blocks.map((block, idx) => (
             <div key={idx} className="block">
@@ -46,11 +68,19 @@ export default function ReadPage() {
                 <h3>{block.content}</h3>
               )}
               {block.type === "list" && (
-                <ul>
-                  {block.items.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
+                block.listType === "ordered" ? (
+                  <ol>
+                    {block.items.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ol>
+                ) : (
+                  <ul>
+                    {block.items.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                )
               )}
               {block.type === "image" && (
                 <figure>
