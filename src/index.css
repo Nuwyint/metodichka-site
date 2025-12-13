@@ -8,6 +8,7 @@
 @import "./styles/settings.css";
 @import "./styles/progress.css";
 @import "./styles/quiz.css";
+@import "./styles/animations.css";
 
 *,
 *::before,

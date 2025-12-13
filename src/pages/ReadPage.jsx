@@ -19,10 +19,11 @@ export default function ReadPage() {
   
   if (!chapter) {
     return (
-      <div className="error-page">
-        <h2>Раздел не найден</h2>
-        <p>Запрошенный раздел не существует.</p>
-        <Link to="/">Вернуться на главную</Link>
+      <div className="error-page empty-state fade-in">
+        <div className="empty-state-icon">📄</div>
+        <h2 className="empty-state-title">Раздел не найден</h2>
+        <p className="empty-state-text">Запрошенный раздел не существует.</p>
+        <Link to="/" className="btn btn-primary">Вернуться на главную</Link>
       </div>
     );
   }
@@ -34,10 +35,11 @@ export default function ReadPage() {
 
   if (!section) {
     return (
-      <div className="error-page">
-        <h2>Раздел не найден</h2>
-        <p>Запрошенный раздел не существует в этой главе.</p>
-        <Link to={`/read/${chapterId}`}>Вернуться к главе</Link>
+      <div className="error-page empty-state fade-in">
+        <div className="empty-state-icon">📄</div>
+        <h2 className="empty-state-title">Раздел не найден</h2>
+        <p className="empty-state-text">Запрошенный раздел не существует в этой главе.</p>
+        <Link to={`/read/${chapterId}`} className="btn btn-primary">Вернуться к главе</Link>
       </div>
     );
   }
@@ -59,7 +61,7 @@ export default function ReadPage() {
   ];
 
   return (
-    <div className="read-page">
+    <div className="read-page fade-in">
       <nav className="breadcrumbs">
         {breadcrumbs.map((crumb, idx) => (
           <span key={idx}>

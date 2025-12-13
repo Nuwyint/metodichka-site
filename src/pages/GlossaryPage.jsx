@@ -55,8 +55,10 @@ export default function GlossaryPage() {
       </div>
 
       {filteredGlossary.length === 0 ? (
-        <div className="glossary-empty">
-          <p>Термины не найдены. Попробуйте другой запрос.</p>
+        <div className="glossary-empty empty-state fade-in">
+          <div className="empty-state-icon">📚</div>
+          <h3 className="empty-state-title">Термины не найдены</h3>
+          <p className="empty-state-text">Попробуйте другой запрос.</p>
         </div>
       ) : (
         <div className="glossary-content">

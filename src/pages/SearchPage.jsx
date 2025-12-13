@@ -57,14 +57,18 @@ export default function SearchPage() {
       )}
 
       {query && results.length === 0 && (
-        <div className="search-empty">
-          <p>Ничего не найдено. Попробуйте другой запрос.</p>
+        <div className="search-empty empty-state fade-in">
+          <div className="empty-state-icon">🔍</div>
+          <h3 className="empty-state-title">Ничего не найдено</h3>
+          <p className="empty-state-text">Попробуйте другой запрос или проверьте правописание.</p>
         </div>
       )}
 
       {!query && (
-        <div className="search-empty">
-          <p>Введите запрос для поиска по содержимому методички.</p>
+        <div className="search-empty empty-state fade-in">
+          <div className="empty-state-icon">🔍</div>
+          <h3 className="empty-state-title">Поиск по методичке</h3>
+          <p className="empty-state-text">Введите запрос для поиска по содержимому методички.</p>
         </div>
       )}
     </div>

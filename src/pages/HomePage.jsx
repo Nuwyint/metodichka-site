@@ -26,7 +26,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="home-page">
+    <div className="home-page fade-in">
       <div className="home-hero">
         <h1>Методическое пособие</h1>
         <p className="home-subtitle">
