@@ -1,16 +1,71 @@
-# React + Vite
+# Методическое пособие по мультимедийным технологиям
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Интерактивное веб-приложение для изучения проектирования и разработки мультимедийного контента и пользовательского интерфейса.
 
-Currently, two official plugins are available:
+## 🚀 Запуск проекта
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Требования
+- Node.js 18+ 
+- npm или yarn
 
-## React Compiler
+### Установка зависимостей
+```bash
+npm install
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Запуск в режиме разработки
+```bash
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Приложение будет доступно по адресу `http://localhost:5173`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Сборка для продакшена
+```bash
+npm run build
+```
+
+### Просмотр собранной версии
+```bash
+npm run preview
+```
+
+## 📁 Структура проекта
+
+```
+src/
+├── pages/              # Страницы приложения
+├── components/         # React компоненты
+│   ├── layout/        # Компоненты макета (Header, Sidebar)
+│   ├── reader/        # Компоненты читалки
+│   └── ui/            # UI компоненты (кнопки, карточки)
+├── data/              # Данные методички (контент)
+├── utils/             # Утилиты и хелперы
+└── styles/            # Глобальные стили
+
+public/
+└── media/             # Медиафайлы (изображения, видео, аудио)
+```
+
+## ✨ Реализованные функции
+
+- 📚 Структурированный контент методички
+- 📖 Интерактивная читалка с навигацией
+- 🔍 Поиск по содержимому
+- 📝 Глоссарий терминов
+- 🧮 Поддержка математических формул
+- 💻 Подсветка кода с копированием
+- ⚙️ Настройки чтения (шрифт, тема, ширина)
+- 📊 Отслеживание прогресса чтения
+- ✅ Мини-тесты после разделов
+- 🎨 Адаптивный дизайн
+
+## 🛠 Технологии
+
+- React 19
+- Vite
+- CSS Modules / CSS
+
+## 📝 Коммиты
+
+Используется автоматический коммит через `npm run ac "сообщение"`
