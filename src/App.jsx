@@ -2947,8 +2947,18 @@ function App() {
                 newPositions[key] = null;
               }
             } else {
-              // Плашка уже показана - сохраняем её фиксированную позицию (не обновляем)
-              newPositions[key] = currentPosition;
+              // Плашка уже показана - проверяем, что она в видимой области
+              // Если плашка ушла за пределы видимой области, скрываем её
+              const viewportTop = scrollTop;
+              const viewportBottom = scrollTop + window.innerHeight;
+              
+              if (currentPosition < viewportTop - 200 || currentPosition > viewportBottom + 200) {
+                // Плашка далеко от видимой области - скрываем
+                newPositions[key] = null;
+              } else {
+                // Плашка в видимой области - сохраняем позицию
+                newPositions[key] = currentPosition;
+              }
             }
           }
         });
