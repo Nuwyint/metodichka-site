@@ -65,7 +65,7 @@ export default function ReadPage() {
       {chapter.short && <p className="chapter-short">{chapter.short}</p>}
       
       <article className="section-content">
-        <AnchorLink id={section.id} title={section.title} />
+        <AnchorLink id={section.id} title={section.title} level={2} />
         <div className="section-blocks">
           {section.blocks.map((block, idx) => {
             const blockId = block.type === "heading" 
@@ -76,7 +76,7 @@ export default function ReadPage() {
               <div key={idx} className="block" id={blockId || undefined}>
                 {block.type === "text" && <p>{block.content}</p>}
                 {block.type === "heading" && (
-                  <AnchorLink id={blockId} title={block.content} />
+                  <AnchorLink id={blockId} title={block.content} level={block.level || 3} />
                 )}
                 {block.type === "list" && (
                   block.listType === "ordered" ? (

@@ -1,6 +1,7 @@
 @import "./styles/layout.css";
 @import "./styles/read.css";
 @import "./styles/reader.css";
+@import "./styles/search.css";
 
 *,
 *::before,

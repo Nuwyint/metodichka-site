@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AnchorLink({ id, title }) {
+export default function AnchorLink({ id, title, level = 2 }) {
   const [copied, setCopied] = useState(false);
 
   const copyLink = () => {
@@ -11,11 +11,13 @@ export default function AnchorLink({ id, title }) {
     });
   };
 
+  const HeadingTag = `h${level}`;
+
   return (
     <span className="anchor-link-wrapper">
-      <a href={`#${id}`} className="anchor-link" id={id}>
+      <HeadingTag className="anchor-link" id={id}>
         {title}
-      </a>
+      </HeadingTag>
       <button
         onClick={copyLink}
         className="anchor-copy-btn"
