@@ -302,6 +302,44 @@ body {
   margin: 8px 0 12px;
 }
 
+.content-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.content-body thead {
+  background: rgba(30, 64, 175, 0.2);
+}
+
+.content-body th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.content-body td {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.content-body tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.content-body tbody tr:hover {
+  background: rgba(30, 64, 175, 0.1);
+}
+
 .content-block {
   border-radius: 18px;
   border: 1px solid var(--border-subtle);
