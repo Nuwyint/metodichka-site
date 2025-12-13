@@ -561,8 +561,7 @@ body {
   user-select: none;
 }
 
-.image-comparison-after,
-.image-comparison-before {
+.image-comparison-after {
   display: block;
   width: 100%;
   height: auto;
@@ -575,14 +574,15 @@ body {
   left: 0;
   height: 100%;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 14px 0 0 14px;
 }
 
 .image-comparison-before {
+  display: block;
   width: 100%;
   height: auto;
   object-fit: cover;
-  display: block;
+  border-radius: 14px;
 }
 
 .image-comparison-slider {
