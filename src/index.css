@@ -4,6 +4,7 @@
 @import "./styles/search.css";
 @import "./styles/glossary.css";
 @import "./styles/formula.css";
+@import "./styles/code.css";
 
 *,
 *::before,
