@@ -2490,6 +2490,7 @@ function Header({
   onSelectSection,
   searchInputRef,
   onCopyLink,
+  onOpenHelp,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -2612,6 +2613,14 @@ function Header({
         >
           ⬇ PDF
         </button>
+        <button
+          className="header-btn"
+          type="button"
+          onClick={onOpenHelp}
+          title="Справка (горячие клавиши)"
+        >
+          ?
+        </button>
       </div>
     </header>
   );
@@ -2673,6 +2682,39 @@ function Toasts({ items, onRemove }) {
           </button>
         </div>
       ))}
+    </div>
+  );
+}
+
+function Modal({ open, title, children, onClose }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose?.();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div className="modal-overlay" role="dialog" aria-modal="true" onMouseDown={onClose}>
+      <div className="modal-card" onMouseDown={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <div className="modal-title">{title}</div>
+          <button
+            type="button"
+            className="modal-close"
+            onClick={onClose}
+            aria-label="Закрыть"
+            title="Закрыть"
+          >
+            ×
+          </button>
+        </div>
+        <div className="modal-body">{children}</div>
+      </div>
     </div>
   );
 }
@@ -3108,6 +3150,7 @@ function App() {
   const searchInputRef = useRef(null);
   const [toasts, setToasts] = useState([]);
   const toastTimersRef = useRef(new Map());
+  const [helpOpen, setHelpOpen] = useState(false);
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3328,6 +3371,13 @@ function App() {
 
       if (e.key === "Escape") {
         if (lightbox) setLightbox(null);
+        if (helpOpen) setHelpOpen(false);
+        return;
+      }
+
+      if ((e.key === "?" || e.key === "h" || e.key === "H") && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        setHelpOpen(true);
         return;
       }
 
@@ -3344,7 +3394,7 @@ function App() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [hasNext, hasPrev, goNext, goPrev, lightbox]);
+  }, [hasNext, hasPrev, goNext, goPrev, lightbox, helpOpen]);
 
    const cfg = interactiveConfig[currentId] || {};
 
@@ -3403,6 +3453,7 @@ function App() {
         onSelectSection={selectSection}
         searchInputRef={searchInputRef}
         onCopyLink={copyLink}
+        onOpenHelp={() => setHelpOpen(true)}
       />
 
       <div className="layout">
@@ -3469,6 +3520,37 @@ function App() {
       />
 
       <Toasts items={toasts} onRemove={removeToast} />
+
+      <Modal open={helpOpen} title="Справка и горячие клавиши" onClose={() => setHelpOpen(false)}>
+        <div className="help-grid">
+          <div className="help-block">
+            <div className="help-title">Навигация</div>
+            <ul className="help-list">
+              <li>
+                <strong>N</strong> — следующая глава
+              </li>
+              <li>
+                <strong>P</strong> — предыдущая глава
+              </li>
+              <li>
+                <strong>/</strong> — фокус в поиск по главам
+              </li>
+              <li>
+                <strong>Esc</strong> — закрыть окно/картинку
+              </li>
+            </ul>
+          </div>
+          <div className="help-block">
+            <div className="help-title">Фишки</div>
+            <ul className="help-list">
+              <li>Клик по картинке — открыть просмотр</li>
+              <li>Кнопка 🔗 — копирует ссылку на текущую главу</li>
+              <li>Кнопка 🖨 — печать текущей главы</li>
+              <li>Кнопка ↑ — наверх</li>
+            </ul>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
