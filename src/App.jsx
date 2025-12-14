@@ -2491,6 +2491,8 @@ function Header({
   searchInputRef,
   onCopyLink,
   onOpenHelp,
+  focusMode,
+  onToggleFocus,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -2595,6 +2597,14 @@ function Header({
           title="Печать текущей главы"
         >
           🖨
+        </button>
+        <button
+          className="header-btn"
+          type="button"
+          onClick={onToggleFocus}
+          title={focusMode ? "Выйти из режима фокуса (F)" : "Режим фокуса (F)"}
+        >
+          {focusMode ? "🧘" : "🎯"}
         </button>
         <button
           className="header-btn"
@@ -3151,6 +3161,10 @@ function App() {
   const [toasts, setToasts] = useState([]);
   const toastTimersRef = useRef(new Map());
   const [helpOpen, setHelpOpen] = useState(false);
+  const [focusMode, setFocusMode] = useState(() => {
+    const saved = localStorage.getItem("metodichka-focusMode");
+    return saved === "1";
+  });
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3220,6 +3234,10 @@ function App() {
     const nextUrl = `${window.location.pathname}${window.location.search}#${currentId}`;
     window.history.replaceState(null, "", nextUrl);
   }, [currentId]);
+
+  useEffect(() => {
+    localStorage.setItem("metodichka-focusMode", focusMode ? "1" : "0");
+  }, [focusMode]);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -3381,6 +3399,12 @@ function App() {
         return;
       }
 
+      if ((e.key === "f" || e.key === "F") && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        setFocusMode((v) => !v);
+        return;
+      }
+
       if ((e.key === "n" || e.key === "N") && hasNext) {
         goNext();
         return;
@@ -3454,16 +3478,20 @@ function App() {
         searchInputRef={searchInputRef}
         onCopyLink={copyLink}
         onOpenHelp={() => setHelpOpen(true)}
+        focusMode={focusMode}
+        onToggleFocus={() => setFocusMode((v) => !v)}
       />
 
-      <div className="layout">
-        <Sidebar
-          sections={sections}
-          currentId={currentId}
-          onSelect={(id) => {
-            selectSection(id);
-          }}
-        />
+      <div className={`layout ${focusMode ? "layout--focus" : ""}`}>
+        {!focusMode && (
+          <Sidebar
+            sections={sections}
+            currentId={currentId}
+            onSelect={(id) => {
+              selectSection(id);
+            }}
+          />
+        )}
 
         <main className="main">
           <article className="content">
