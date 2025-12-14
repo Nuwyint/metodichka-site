@@ -2587,6 +2587,14 @@ function Header({
           →
         </button>
         <button
+          className="header-btn"
+          type="button"
+          onClick={() => window.print()}
+          title="Печать текущей главы"
+        >
+          🖨
+        </button>
+        <button
           className="header-btn header-btn-ghost"
           type="button"
           onClick={() =>

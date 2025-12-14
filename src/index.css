@@ -849,6 +849,56 @@ body {
   border-color: var(--accent);
 }
 
+/* ---------------- PRINT ---------------- */
+
+@media print {
+  :root {
+    color: #000;
+    background: #fff;
+    --text-main: #000;
+    --text-muted: #333;
+    --bg-body: #fff;
+    --bg-card: #fff;
+    --bg-panel: #fff;
+    --border-subtle: #ddd;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .header,
+  .sidebar,
+  .background-music,
+  .interactive-panel,
+  .back-to-top,
+  .lightbox-overlay {
+    display: none !important;
+  }
+
+  .layout {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+
+  .main {
+    padding: 0 !important;
+  }
+
+  .content {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .content-media-img,
+  .content-media-video,
+  .content-media-audio {
+    border: 1px solid #ddd !important;
+  }
+}
+
 .content-body {
   display: flex;
   flex-direction: column;
