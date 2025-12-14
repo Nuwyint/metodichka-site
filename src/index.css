@@ -435,6 +435,56 @@ body {
   grid-template-columns: 1fr;
 }
 
+/* ---------------- RESPONSIVE ---------------- */
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: relative;
+    top: auto;
+    max-height: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 10px 12px;
+  }
+
+  .progress-track {
+    width: 150px;
+  }
+
+  .header-right {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .header-search-input {
+    width: 60vw;
+  }
+
+  .header-search-results {
+    width: calc(100vw - 24px);
+    right: -8px;
+  }
+
+  .header-settings-popover {
+    width: calc(100vw - 24px);
+    right: -8px;
+  }
+
+  .toasts {
+    right: 12px;
+    bottom: 70px;
+    width: calc(100vw - 24px);
+  }
+}
+
 /* ---------------- SIDEBAR ---------------- */
 
 .sidebar {
