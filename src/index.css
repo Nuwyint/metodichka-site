@@ -864,10 +864,11 @@ body {
   border: 1px solid rgba(129, 140, 248, 0.5);
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.95);
   color: #e5e7eb;
-  z-index: 15;
+  /* Должно быть выше sticky-хедера (у него z-index: 20) */
+  z-index: 30;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-40%); /* стартовая позиция чуть выше */
+  transform: translateY(-10px); /* лёгкий подъём для анимации появления */
   /* top задаём из React через style={{ top }} */
 }
 
@@ -891,11 +892,11 @@ body {
 @keyframes panel-fade-in {
   from {
     opacity: 0;
-    transform: translateY(-45%);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateY(-50%);
+    transform: translateY(0);
   }
 }
 

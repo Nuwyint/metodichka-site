@@ -2902,6 +2902,8 @@ function InteractivePanel({ side, block, visible, top }) {
 function App() {
   const [currentId, setCurrentId] = useState("intro");
   const [scrollPercent, setScrollPercent] = useState(0);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [maxScroll, setMaxScroll] = useState(0);
 
   // Храним позиции всех плашек
   const [panelPositions, setPanelPositions] = useState({});
@@ -2915,15 +2917,17 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       const doc = document.documentElement;
-      const scrollTop = window.scrollY || doc.scrollTop || 0;
-      const maxScroll = doc.scrollHeight - window.innerHeight;
+      const st = window.scrollY || doc.scrollTop || 0;
+      const ms = doc.scrollHeight - window.innerHeight;
+      setScrollTop(st);
+      setMaxScroll(ms);
 
-      if (maxScroll <= 0) {
+      if (ms <= 0) {
         setScrollPercent(0);
         return;
       }
 
-      const p = (scrollTop / maxScroll) * 100;
+      const p = (st / ms) * 100;
       setScrollPercent(p);
 
       // конфиг для текущего раздела
@@ -2942,7 +2946,7 @@ function App() {
                 const offset = panelCfg.offset ?? 0.4;
                 // Позиция "якорем": привязываем к ПРОЦЕНТУ скролла (trigger), а не к текущему scrollTop
                 // Тогда плашка живет в конкретном месте документа и НЕ "едет" за пользователем.
-                const top = (maxScroll * ((panelCfg.trigger ?? 30) / 100)) + window.innerHeight * offset;
+                const top = (ms * ((panelCfg.trigger ?? 30) / 100)) + window.innerHeight * offset;
                 newPositions[key] = top;
               } else {
                 newPositions[key] = null;
@@ -3022,9 +3026,14 @@ function App() {
   leftPanels.sort((a, b) => a.trigger - b.trigger);
   rightPanels.sort((a, b) => a.trigger - b.trigger);
 
-  // Находим самую подходящую плашку для каждой стороны (последняя, которая активировалась)
-  const activeLeft = leftPanels.filter(p => p.visible).pop() || null;
-  const activeRight = rightPanels.filter(p => p.visible).pop() || null;
+  // Показываем все плашки, которые попадают в текущий viewport (иначе кажется, что "их стало меньше")
+  const headerEl = typeof document !== "undefined" ? document.querySelector(".header") : null;
+  const headerH = headerEl?.offsetHeight ?? 70;
+  const viewportTop = scrollTop + headerH + 8;
+  const viewportBottom = scrollTop + window.innerHeight - 8;
+
+  const visibleLeft = leftPanels.filter((p) => typeof p.top === "number" && p.top >= viewportTop && p.top <= viewportBottom);
+  const visibleRight = rightPanels.filter((p) => typeof p.top === "number" && p.top >= viewportTop && p.top <= viewportBottom);
 
   return (
     <div className="app">
@@ -3060,27 +3069,27 @@ function App() {
         </main>
       </div>
 
-      {/* Интерактивные плашки слева - показываем только активную */}
-      {activeLeft && (
-      <InteractivePanel
-          key={activeLeft.key}
-        side="left"
-          block={activeLeft.block}
-          visible={activeLeft.visible}
-          top={activeLeft.top}
+      {/* Интерактивные плашки слева */}
+      {visibleLeft.map((p) => (
+        <InteractivePanel
+          key={p.key}
+          side="left"
+          block={p.block}
+          visible={p.visible}
+          top={p.top}
         />
-      )}
+      ))}
       
-      {/* Интерактивные плашки справа - показываем только активную */}
-      {activeRight && (
-      <InteractivePanel
-          key={activeRight.key}
-        side="right"
-          block={activeRight.block}
-          visible={activeRight.visible}
-          top={activeRight.top}
+      {/* Интерактивные плашки справа */}
+      {visibleRight.map((p) => (
+        <InteractivePanel
+          key={p.key}
+          side="right"
+          block={p.block}
+          visible={p.visible}
+          top={p.top}
         />
-      )}
+      ))}
     </div>
   );
 }
