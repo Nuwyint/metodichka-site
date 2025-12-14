@@ -1890,7 +1890,9 @@ plt.show()`,
   },
 ];
 
-const withBase = (path) => `${import.meta.env.BASE_URL}${String(path || "").replace(/^\/+/, "")}`;
+function withBase(path) {
+  return `${import.meta.env.BASE_URL}${String(path || "").replace(/^\/+/, "")}`;
+}
 
 // ------------------ ИНТЕРАКТИВ ДЛЯ ПЛАШЕК ------------------
 
