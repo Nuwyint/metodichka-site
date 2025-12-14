@@ -3823,6 +3823,9 @@ function App() {
 
   return (
     <div className="app">
+      <a className="skip-link" href="#main-content">
+        Перейти к содержимому
+      </a>
       <BackgroundMusic />
       <Header
         currentTitle={currentSection.title}
@@ -3865,7 +3868,7 @@ function App() {
           />
         )}
 
-        <main className="main">
+        <main className="main" id="main-content" tabIndex={-1}>
           <article className="content">
             <h2 className="content-title">{currentSection.title}</h2>
             {currentSection.short && (
