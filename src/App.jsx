@@ -2497,6 +2497,8 @@ function Header({
   onFontScaleChange,
   lineHeight,
   onLineHeightChange,
+  contentWidth,
+  onContentWidthChange,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -2648,6 +2650,37 @@ function Header({
                       )
                     }
                     title="Увеличить"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div className="settings-row settings-row--mt">
+                <div className="settings-label">Ширина</div>
+                <div className="settings-controls">
+                  <button
+                    type="button"
+                    className="settings-btn"
+                    onClick={() =>
+                      onContentWidthChange(
+                        Math.max(720, Math.round((contentWidth - 80) / 10) * 10)
+                      )
+                    }
+                    title="Уже"
+                  >
+                    −
+                  </button>
+                  <div className="settings-value">{contentWidth}px</div>
+                  <button
+                    type="button"
+                    className="settings-btn"
+                    onClick={() =>
+                      onContentWidthChange(
+                        Math.min(1180, Math.round((contentWidth + 80) / 10) * 10)
+                      )
+                    }
+                    title="Шире"
                   >
                     +
                   </button>
@@ -3258,6 +3291,11 @@ function App() {
     const v = saved ? parseFloat(saved) : 1.55;
     return Number.isFinite(v) ? Math.min(1.9, Math.max(1.3, v)) : 1.55;
   });
+  const [contentWidth, setContentWidth] = useState(() => {
+    const saved = localStorage.getItem("metodichka-contentWidth");
+    const v = saved ? parseInt(saved, 10) : 920;
+    return Number.isFinite(v) ? Math.min(1180, Math.max(720, v)) : 920;
+  });
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3341,6 +3379,11 @@ function App() {
     localStorage.setItem("metodichka-lineHeight", String(lineHeight));
     document.documentElement.style.setProperty("--reader-line-height", String(lineHeight));
   }, [lineHeight]);
+
+  useEffect(() => {
+    localStorage.setItem("metodichka-contentWidth", String(contentWidth));
+    document.documentElement.style.setProperty("--reader-content-width", `${contentWidth}px`);
+  }, [contentWidth]);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -3587,6 +3630,8 @@ function App() {
         onFontScaleChange={setFontScale}
         lineHeight={lineHeight}
         onLineHeightChange={setLineHeight}
+        contentWidth={contentWidth}
+        onContentWidthChange={setContentWidth}
       />
 
       <div className={`layout ${focusMode ? "layout--focus" : ""}`}>
