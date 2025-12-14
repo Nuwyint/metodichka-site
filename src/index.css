@@ -573,10 +573,12 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   height: 100%;
   overflow: hidden;
   border-radius: 14px 0 0 14px;
-  will-change: width;
+  will-change: clip-path;
 }
 
 .image-comparison-before {

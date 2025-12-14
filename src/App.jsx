@@ -2347,7 +2347,9 @@ function ImageComparisonSlider({ beforeSrc, afterSrc, alt, caption }) {
         />
         <div
           className="image-comparison-before-wrapper"
-          style={{ width: `${sliderPosition}%` }}
+          // ВАЖНО: не меняем ширину обертки (иначе картинка "масштабируется").
+          // Вместо этого клипаем слой "before" по проценту.
+          style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
         >
           <img
             src={beforeSrc}
