@@ -3643,7 +3643,7 @@ function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
    
-   useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       const doc = document.documentElement;
       const st = window.scrollY || doc.scrollTop || 0;
@@ -3702,9 +3702,23 @@ function App() {
     };
 
     handleScroll(); // посчитать сразу при монтировании
-    window.addEventListener("scroll", handleScroll);
+
+    let ticking = false;
+    let rafId = 0;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      rafId = window.requestAnimationFrame(() => {
+        ticking = false;
+        handleScroll();
+      });
+    };
+
+    const opts = { passive: true };
+    window.addEventListener("scroll", onScroll, opts);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", onScroll, opts);
+      if (rafId) cancelAnimationFrame(rafId);
       if (scrollSaveTimerRef.current) {
         clearTimeout(scrollSaveTimerRef.current);
         scrollSaveTimerRef.current = null;
