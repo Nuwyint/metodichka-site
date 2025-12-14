@@ -2493,15 +2493,28 @@ function Header({
   onOpenHelp,
   focusMode,
   onToggleFocus,
+  fontScale,
+  onFontScaleChange,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const settingsRef = useRef(null);
 
   useEffect(() => {
     const onDown = (e) => {
       if (!rootRef.current) return;
       if (!rootRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, []);
+
+  useEffect(() => {
+    const onDown = (e) => {
+      if (!settingsRef.current) return;
+      if (!settingsRef.current.contains(e.target)) setSettingsOpen(false);
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
@@ -2570,6 +2583,43 @@ function Header({
                   </button>
                 ))
               )}
+            </div>
+          )}
+        </div>
+
+        <div className="header-settings" ref={settingsRef}>
+          <button
+            className="header-btn"
+            type="button"
+            onClick={() => setSettingsOpen((v) => !v)}
+            title="Настройки чтения"
+          >
+            ⚙
+          </button>
+          {settingsOpen && (
+            <div className="header-settings-popover">
+              <div className="settings-row">
+                <div className="settings-label">Размер текста</div>
+                <div className="settings-controls">
+                  <button
+                    type="button"
+                    className="settings-btn"
+                    onClick={() => onFontScaleChange(Math.max(0.9, Math.round((fontScale - 0.05) * 100) / 100))}
+                    title="Уменьшить"
+                  >
+                    A-
+                  </button>
+                  <div className="settings-value">{Math.round(fontScale * 100)}%</div>
+                  <button
+                    type="button"
+                    className="settings-btn"
+                    onClick={() => onFontScaleChange(Math.min(1.35, Math.round((fontScale + 0.05) * 100) / 100))}
+                    title="Увеличить"
+                  >
+                    A+
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -3165,6 +3215,11 @@ function App() {
     const saved = localStorage.getItem("metodichka-focusMode");
     return saved === "1";
   });
+  const [fontScale, setFontScale] = useState(() => {
+    const saved = localStorage.getItem("metodichka-fontScale");
+    const v = saved ? parseFloat(saved) : 1;
+    return Number.isFinite(v) ? Math.min(1.35, Math.max(0.9, v)) : 1;
+  });
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3238,6 +3293,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem("metodichka-focusMode", focusMode ? "1" : "0");
   }, [focusMode]);
+
+  useEffect(() => {
+    localStorage.setItem("metodichka-fontScale", String(fontScale));
+    document.documentElement.style.setProperty("--reader-font-scale", String(fontScale));
+  }, [fontScale]);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -3480,6 +3540,8 @@ function App() {
         onOpenHelp={() => setHelpOpen(true)}
         focusMode={focusMode}
         onToggleFocus={() => setFocusMode((v) => !v)}
+        fontScale={fontScale}
+        onFontScaleChange={setFontScale}
       />
 
       <div className={`layout ${focusMode ? "layout--focus" : ""}`}>
