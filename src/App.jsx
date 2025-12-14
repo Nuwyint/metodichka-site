@@ -2488,6 +2488,7 @@ function Header({
   hasNext,
   sections,
   onSelectSection,
+  searchInputRef,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -2528,6 +2529,7 @@ function Header({
         <div className="header-search" ref={rootRef}>
           <input
             className="header-search-input"
+            ref={searchInputRef}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -2541,7 +2543,7 @@ function Header({
                 setQuery("");
               }
             }}
-            placeholder="Поиск главы…"
+            placeholder="Поиск главы… ( / )"
             aria-label="Поиск по главам"
           />
 
@@ -3062,6 +3064,7 @@ function App() {
   const [scrollPercent, setScrollPercent] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [lightbox, setLightbox] = useState(null);
+  const searchInputRef = useRef(null);
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3094,7 +3097,7 @@ function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
    
-  useEffect(() => {
+   useEffect(() => {
     const handleScroll = () => {
       const doc = document.documentElement;
       const st = window.scrollY || doc.scrollTop || 0;
@@ -3212,6 +3215,43 @@ function App() {
     scrollToTop();
   };
 
+  // Горячие клавиши: N/P — следующая/предыдущая глава, "/" — фокус в поиск, Esc — закрыть просмотр картинки
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      const tag = (e.target && e.target.tagName) || "";
+      const isTyping =
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        (e.target && e.target.isContentEditable);
+
+      if (isTyping && e.key !== "Escape") return;
+
+      if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        return;
+      }
+
+      if (e.key === "Escape") {
+        if (lightbox) setLightbox(null);
+        return;
+      }
+
+      if ((e.key === "n" || e.key === "N") && hasNext) {
+        goNext();
+        return;
+      }
+
+      if ((e.key === "p" || e.key === "P") && hasPrev) {
+        goPrev();
+        return;
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [hasNext, hasPrev, goNext, goPrev, lightbox]);
+
    const cfg = interactiveConfig[currentId] || {};
 
   // Определяем, какие плашки слева, а какие справа
@@ -3267,6 +3307,7 @@ function App() {
         hasNext={hasNext}
         sections={sections}
         onSelectSection={selectSection}
+        searchInputRef={searchInputRef}
       />
 
       <div className="layout">
@@ -3294,9 +3335,9 @@ function App() {
 
       {/* Интерактивные плашки слева */}
       {stackedLeft.map((p) => (
-        <InteractivePanel
+      <InteractivePanel
           key={p.key}
-          side="left"
+        side="left"
           block={p.block}
           visible={p.visible}
           top={p.top}
@@ -3305,9 +3346,9 @@ function App() {
       
       {/* Интерактивные плашки справа */}
       {stackedRight.map((p) => (
-        <InteractivePanel
+      <InteractivePanel
           key={p.key}
-          side="right"
+        side="right"
           block={p.block}
           visible={p.visible}
           top={p.top}
