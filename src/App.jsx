@@ -3923,6 +3923,33 @@ function App() {
 
       <Toasts items={toasts} onRemove={removeToast} />
 
+      <footer className="footer">
+        <div className="footer-inner">
+          <div className="footer-left">
+            <span className="footer-badge">Методичка</span>
+            <span className="footer-muted">
+              Обновлено:{" "}
+              {new Date().toLocaleDateString("ru-RU", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </span>
+          </div>
+          <div className="footer-right">
+            <span className="footer-muted">Подсказка: нажми “?”</span>
+            <a
+              className="footer-link"
+              href="https://github.com/Nuwyint/metodichka-site"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </footer>
+
       <Modal open={helpOpen} title="Справка и горячие клавиши" onClose={() => setHelpOpen(false)}>
         <div className="help-grid">
           <div className="help-block">
