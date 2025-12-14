@@ -1894,6 +1894,37 @@ function withBase(path) {
   return `${import.meta.env.BASE_URL}${String(path || "").replace(/^\/+/, "")}`;
 }
 
+function extractText(node) {
+  if (node === null || node === undefined || node === false) return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(extractText).join(" ");
+  if (typeof node === "object" && node.props) return extractText(node.props.children);
+  return "";
+}
+
+function estimateReadingMinutes(section) {
+  const parts = [];
+  if (!section) return 1;
+  if (section.title) parts.push(section.title);
+  if (section.short) parts.push(section.short);
+  if (section.content) parts.push(extractText(section.content));
+  const blocks = section.blocks || [];
+  blocks.forEach((b) => {
+    if (!b) return;
+    if (b.type === "text") parts.push(extractText(b.body));
+    if (b.type === "quiz") {
+      parts.push(b.title || "", b.question || "");
+      if (Array.isArray(b.options)) parts.push(b.options.join(" "));
+    }
+    if (b.type === "media") parts.push(b.caption || "", b.alt || "");
+    if (b.type === "code") parts.push(b.title || "", b.code || "");
+  });
+  const text = parts.join(" ").replace(/\s+/g, " ").trim();
+  const words = text ? text.split(" ").length : 0;
+  const minutes = Math.ceil(words / 180);
+  return Math.max(1, Math.min(60, minutes));
+}
+
 // ------------------ ИНТЕРАКТИВ ДЛЯ ПЛАШЕК ------------------
 
 const interactiveConfig = {
@@ -2481,6 +2512,7 @@ function BackgroundMusic() {
 
 function Header({
   currentTitle,
+  readingMinutes,
   progress,
   onPrev,
   onNext,
@@ -2546,6 +2578,7 @@ function Header({
         <div className="header-title-row">
           <span className="badge">МЕТОДИЧКА</span>
           <span className="header-section-title">{currentTitle}</span>
+          <span className="header-section-meta">≈ {readingMinutes} мин</span>
         </div>
         <ProgressBar value={progress} />
       </div>
@@ -3531,6 +3564,7 @@ function App() {
   const currentIndex = sections.findIndex((s) => s.id === currentId);
   const currentSection =
     sections.find((s) => s.id === currentId) || sections[0];
+  const readingMinutes = estimateReadingMinutes(currentSection);
 
   // общий прогресс = номер раздела + внутри него по скроллу
   const totalProgress =
@@ -3663,6 +3697,7 @@ function App() {
       <BackgroundMusic />
       <Header
         currentTitle={currentSection.title}
+        readingMinutes={readingMinutes}
         progress={totalProgress}
         onPrev={goPrev}
         onNext={goNext}

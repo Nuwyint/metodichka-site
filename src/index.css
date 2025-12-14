@@ -126,6 +126,15 @@ body {
   color: var(--text-muted);
 }
 
+.header-section-meta {
+  font-size: 11px;
+  color: rgba(229, 231, 235, 0.7);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.65);
+}
+
 /* прогресс в хедере */
 
 .progress-root {
