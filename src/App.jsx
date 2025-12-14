@@ -2904,8 +2904,6 @@ function InteractivePanel({ side, block, visible, top }) {
 function App() {
   const [currentId, setCurrentId] = useState("intro");
   const [scrollPercent, setScrollPercent] = useState(0);
-  const [scrollTop, setScrollTop] = useState(0);
-  const [maxScroll, setMaxScroll] = useState(0);
 
   // Храним позиции всех плашек
   const [panelPositions, setPanelPositions] = useState({});
@@ -2921,8 +2919,6 @@ function App() {
       const doc = document.documentElement;
       const st = window.scrollY || doc.scrollTop || 0;
       const ms = doc.scrollHeight - window.innerHeight;
-      setScrollTop(st);
-      setMaxScroll(ms);
 
       if (ms <= 0) {
         setScrollPercent(0);
@@ -2941,21 +2937,23 @@ function App() {
         // Обрабатываем все плашки из конфига
         Object.entries(cfg).forEach(([key, panelCfg]) => {
           if (panelCfg && typeof panelCfg === 'object' && panelCfg.trigger !== undefined) {
-            // Если плашка еще не была показана и достигли триггера - показываем её один раз
+            // Плашка появляется по ПРОЦЕНТУ скролла (trigger).
+            // Позицию (top) фиксируем один раз в момент срабатывания триггера,
+            // чтобы плашка не "ехала" за пользователем.
             const currentPosition = prevPositions[key];
-            if (currentPosition === null || currentPosition === undefined) {
-              if (p > (panelCfg.trigger ?? 30)) {
+            const trigger = panelCfg.trigger ?? 30;
+
+            if (p >= trigger) {
+              if (currentPosition === null || currentPosition === undefined) {
                 const offset = panelCfg.offset ?? 0.4;
-                // Позиция "якорем": привязываем к ПРОЦЕНТУ скролла (trigger), а не к текущему scrollTop
-                // Тогда плашка живет в конкретном месте документа и НЕ "едет" за пользователем.
-                const top = (ms * ((panelCfg.trigger ?? 30) / 100)) + window.innerHeight * offset;
+                const top = st + window.innerHeight * offset;
                 newPositions[key] = top;
               } else {
-                newPositions[key] = null;
+                newPositions[key] = currentPosition;
               }
             } else {
-              // Плашка уже показана — сохраняем её якорную позицию (не обновляем на скролле)
-              newPositions[key] = currentPosition;
+              // если пользователь скроллит назад выше trigger — прячем и даём появиться заново
+              newPositions[key] = null;
             }
           }
         });
@@ -3028,14 +3026,10 @@ function App() {
   leftPanels.sort((a, b) => a.trigger - b.trigger);
   rightPanels.sort((a, b) => a.trigger - b.trigger);
 
-  // Показываем все плашки, которые попадают в текущий viewport (иначе кажется, что "их стало меньше")
-  const headerEl = typeof document !== "undefined" ? document.querySelector(".header") : null;
-  const headerH = headerEl?.offsetHeight ?? 70;
-  const viewportTop = scrollTop + headerH + 8;
-  const viewportBottom = scrollTop + window.innerHeight - 8;
-
-  const visibleLeft = leftPanels.filter((p) => typeof p.top === "number" && p.top >= viewportTop && p.top <= viewportBottom);
-  const visibleRight = rightPanels.filter((p) => typeof p.top === "number" && p.top >= viewportTop && p.top <= viewportBottom);
+  // На каждой стороне показываем только одну активную плашку (последняя по trigger),
+  // чтобы не было наложений.
+  const activeLeft = leftPanels.filter(p => p.visible).pop() || null;
+  const activeRight = rightPanels.filter(p => p.visible).pop() || null;
 
   return (
     <div className="app">
@@ -3072,26 +3066,26 @@ function App() {
       </div>
 
       {/* Интерактивные плашки слева */}
-      {visibleLeft.map((p) => (
+      {activeLeft && (
         <InteractivePanel
-          key={p.key}
+          key={activeLeft.key}
           side="left"
-          block={p.block}
-          visible={p.visible}
-          top={p.top}
+          block={activeLeft.block}
+          visible={activeLeft.visible}
+          top={activeLeft.top}
         />
-      ))}
+      )}
       
       {/* Интерактивные плашки справа */}
-      {visibleRight.map((p) => (
+      {activeRight && (
         <InteractivePanel
-          key={p.key}
+          key={activeRight.key}
           side="right"
-          block={p.block}
-          visible={p.visible}
-          top={p.top}
+          block={activeRight.block}
+          visible={activeRight.visible}
+          top={activeRight.top}
         />
-      ))}
+      )}
     </div>
   );
 }
