@@ -624,6 +624,13 @@ body {
   overflow: hidden;
 }
 
+.hover-image-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: zoom-in;
+}
+
 /* базовая картинка – как была, на всю ширину */
 .hover-image {
   display: block;
@@ -765,6 +772,10 @@ body {
   margin-bottom: 6px;
 }
 
+.content-media-img {
+  cursor: zoom-in;
+}
+
 .content-media-audio {
   margin: 16px 0;
 }
@@ -772,6 +783,70 @@ body {
 .content-media-caption {
   font-size: 12px;
   color: var(--text-muted);
+}
+
+/* ---------------- LIGHTBOX ---------------- */
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(2, 6, 23, 0.75);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.lightbox-card {
+  width: min(1100px, 92vw);
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(2, 6, 23, 0.9);
+  box-shadow: 0 22px 90px rgba(2, 6, 23, 0.85);
+  padding: 14px;
+  position: relative;
+}
+
+.lightbox-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+}
+
+.lightbox-caption {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-close:hover {
+  background: rgba(30, 64, 175, 0.35);
+  border-color: var(--accent);
 }
 
 .content-body {

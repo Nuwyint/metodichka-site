@@ -2598,7 +2598,43 @@ function Header({
   );
 }
 
-function SectionBody({ section }) {
+function Lightbox({ open, src, alt, caption, onClose }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose?.();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="lightbox-overlay"
+      role="dialog"
+      aria-modal="true"
+      onMouseDown={onClose}
+    >
+      <div className="lightbox-card" onMouseDown={(e) => e.stopPropagation()}>
+        <button
+          type="button"
+          className="lightbox-close"
+          onClick={onClose}
+          aria-label="Закрыть"
+          title="Закрыть"
+        >
+          ×
+        </button>
+        <img className="lightbox-img" src={src} alt={alt || ""} />
+        {caption && <div className="lightbox-caption">{caption}</div>}
+      </div>
+    </div>
+  );
+}
+
+function SectionBody({ section, onOpenImage }) {
   // Если blocks нет – используем старый content как один текст-блок
   const blocks =
     section.blocks ||
@@ -2707,7 +2743,19 @@ function SectionBody({ section }) {
                 key={idx}
                 className="content-block content-block--media"
               >
-                <div className="hover-image-wrapper">
+                <button
+                  type="button"
+                  className="hover-image-wrapper hover-image-button"
+                  onClick={() =>
+                    onOpenImage?.({
+                      src: block.src,
+                      alt: block.alt || "",
+                      caption: block.caption,
+                    })
+                  }
+                  aria-label="Открыть изображение"
+                  title="Открыть изображение"
+                >
                   <img
                     src={block.src}
                     alt={block.alt || ""}
@@ -2718,7 +2766,7 @@ function SectionBody({ section }) {
                     alt={block.altHover || block.alt || ""}
                     className="hover-image hover-image--hover"
                   />
-                </div>
+                </button>
                 {block.caption && (
                   <figcaption className="content-media-caption">
                     {block.caption}
@@ -2752,6 +2800,25 @@ function SectionBody({ section }) {
                   src={block.src}
                   alt={block.alt || ""}
                   className="content-media-img"
+                  onClick={() =>
+                    onOpenImage?.({
+                      src: block.src,
+                      alt: block.alt || "",
+                      caption: block.caption,
+                    })
+                  }
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onOpenImage?.({
+                        src: block.src,
+                        alt: block.alt || "",
+                        caption: block.caption,
+                      });
+                    }
+                  }}
                   onError={(e) => {
                     e.target.style.display = 'none';
                     const placeholder = e.target.parentElement.querySelector('.image-placeholder');
@@ -2994,6 +3061,7 @@ function App() {
   });
   const [scrollPercent, setScrollPercent] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [lightbox, setLightbox] = useState(null);
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3216,7 +3284,10 @@ function App() {
             {currentSection.short && (
               <p className="content-short">{currentSection.short}</p>
             )}
-            <SectionBody section={currentSection} />
+            <SectionBody
+              section={currentSection}
+              onOpenImage={(payload) => setLightbox(payload)}
+            />
           </article>
         </main>
       </div>
@@ -3252,6 +3323,14 @@ function App() {
       >
         ↑
       </button>
+
+      <Lightbox
+        open={!!lightbox?.src}
+        src={lightbox?.src}
+        alt={lightbox?.alt}
+        caption={lightbox?.caption}
+        onClose={() => setLightbox(null)}
+      />
     </div>
   );
 }
