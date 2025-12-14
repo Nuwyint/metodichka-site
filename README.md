@@ -1,16 +1,30 @@
-# React + Vite
+# Metodichka Site
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Проект представляет собой мультимедийную веб-версию учебной методички: разделы по главам, удобное оглавление, читабельная тёмная тема с фиолетовыми акцентами, иллюстрации и встроенные интерактивные элементы (тесты, подсказки, медиа-вставки).
 
-Currently, two official plugins are available:
+## Функциональность
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Многостраничная структура (разделы/главы, переключение между ними)
+- Оглавление слева с активным выделением текущей главы
+- Минималистичный хедер с прогресс-баром и кнопками навигации
+- Контент в виде блоков: текстовые карточки + вставки изображений/видео по центру страницы
+- Встроенные тесты (quiz-блоки) внутри текста
+- Боковые интерактивные плашки (слева/справа), которые появляются по прокрутке и закрепляются в конкретной точке страницы
+- Пасхалки для медиа (hover-image: замена изображения при наведении)
 
-## React Compiler
+## Технологии
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- Vite
+- JavaScript (ES Modules)
+- CSS (без сторонних UI-библиотек)
 
-## Expanding the ESLint configuration
+## Установка и запуск
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Требования:
+- Node.js 18+ (рекомендуется LTS)
+- Git
+
+Установка зависимостей:
+```bash
+npm install
