@@ -854,7 +854,7 @@ body {
 }
 
 .interactive-panel {
-  position: absolute;
+  position: fixed;
   width: 260px;
   background: radial-gradient(
     circle at top left,

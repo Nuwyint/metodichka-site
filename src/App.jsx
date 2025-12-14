@@ -2938,23 +2938,19 @@ function App() {
         Object.entries(cfg).forEach(([key, panelCfg]) => {
           if (panelCfg && typeof panelCfg === 'object' && panelCfg.trigger !== undefined) {
             // Плашка появляется по ПРОЦЕНТУ скролла (trigger).
-            // Позицию (top) фиксируем один раз в момент срабатывания триггера,
-            // чтобы плашка не "ехала" за пользователем.
+            // Позиция (top) — фиксированная относительно viewport (под хедером),
+            // чтобы плашки НЕ "уползали" при скролле.
             const currentPosition = prevPositions[key];
             const trigger = panelCfg.trigger ?? 30;
 
             if (p >= trigger) {
-              if (currentPosition === null || currentPosition === undefined) {
-                const offset = panelCfg.offset ?? 0.4;
-                const headerH =
-                  document.querySelector(".header")?.offsetHeight ?? 70;
-                const desiredFromTop = window.innerHeight * offset;
-                const minFromTop = headerH + 16;
-                const top = st + Math.max(desiredFromTop, minFromTop);
-                newPositions[key] = top;
-              } else {
-                newPositions[key] = currentPosition;
-              }
+              const offset = panelCfg.offset ?? 0.4;
+              const headerH =
+                document.querySelector(".header")?.offsetHeight ?? 70;
+              const desiredFromTop = window.innerHeight * offset;
+              const minFromTop = headerH + 16;
+              const top = Math.max(desiredFromTop, minFromTop);
+              newPositions[key] = top;
             } else {
               // если пользователь скроллит назад выше trigger — прячем и даём появиться заново
               newPositions[key] = null;
