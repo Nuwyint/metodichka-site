@@ -2489,6 +2489,7 @@ function Header({
   sections,
   onSelectSection,
   searchInputRef,
+  onCopyLink,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -2593,6 +2594,14 @@ function Header({
           title="Печать текущей главы"
         >
           🖨
+        </button>
+        <button
+          className="header-btn"
+          type="button"
+          onClick={onCopyLink}
+          title="Скопировать ссылку на эту главу"
+        >
+          🔗
         </button>
         <button
           className="header-btn header-btn-ghost"
@@ -3129,6 +3138,32 @@ function App() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
+  const copyLink = async () => {
+    const text = window.location.href;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+      pushToast({ type: "success", title: "Ссылка скопирована", message: text });
+    } catch (e) {
+      pushToast({
+        type: "error",
+        title: "Не удалось скопировать",
+        message: "Браузер заблокировал доступ к буферу обмена.",
+      });
+    }
+  };
+
   useEffect(() => {
     return () => {
       toastTimersRef.current.forEach((t) => clearTimeout(t));
@@ -3367,6 +3402,7 @@ function App() {
         sections={sections}
         onSelectSection={selectSection}
         searchInputRef={searchInputRef}
+        onCopyLink={copyLink}
       />
 
       <div className="layout">
