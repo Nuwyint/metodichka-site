@@ -26,6 +26,7 @@
 
   /* reader settings */
   --reader-font-scale: 1;
+  --reader-line-height: 1.55;
 }
 
 body {
@@ -189,6 +190,10 @@ body {
   border-radius: 12px;
   border: 1px solid rgba(148, 163, 184, 0.16);
   background: rgba(15, 23, 42, 0.55);
+}
+
+.settings-row--mt {
+  margin-top: 10px;
 }
 
 .settings-label {
@@ -1149,6 +1154,7 @@ body {
 
 .content {
   font-size: calc(14px * var(--reader-font-scale));
+  line-height: var(--reader-line-height);
 }
 
 

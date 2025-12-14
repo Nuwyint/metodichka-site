@@ -2495,6 +2495,8 @@ function Header({
   onToggleFocus,
   fontScale,
   onFontScaleChange,
+  lineHeight,
+  onLineHeightChange,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -2617,6 +2619,37 @@ function Header({
                     title="Увеличить"
                   >
                     A+
+                  </button>
+                </div>
+              </div>
+
+              <div className="settings-row settings-row--mt">
+                <div className="settings-label">Интервал</div>
+                <div className="settings-controls">
+                  <button
+                    type="button"
+                    className="settings-btn"
+                    onClick={() =>
+                      onLineHeightChange(
+                        Math.max(1.3, Math.round((lineHeight - 0.1) * 10) / 10)
+                      )
+                    }
+                    title="Уменьшить"
+                  >
+                    −
+                  </button>
+                  <div className="settings-value">{lineHeight.toFixed(1)}</div>
+                  <button
+                    type="button"
+                    className="settings-btn"
+                    onClick={() =>
+                      onLineHeightChange(
+                        Math.min(1.9, Math.round((lineHeight + 0.1) * 10) / 10)
+                      )
+                    }
+                    title="Увеличить"
+                  >
+                    +
                   </button>
                 </div>
               </div>
@@ -3220,6 +3253,11 @@ function App() {
     const v = saved ? parseFloat(saved) : 1;
     return Number.isFinite(v) ? Math.min(1.35, Math.max(0.9, v)) : 1;
   });
+  const [lineHeight, setLineHeight] = useState(() => {
+    const saved = localStorage.getItem("metodichka-lineHeight");
+    const v = saved ? parseFloat(saved) : 1.55;
+    return Number.isFinite(v) ? Math.min(1.9, Math.max(1.3, v)) : 1.55;
+  });
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3298,6 +3336,11 @@ function App() {
     localStorage.setItem("metodichka-fontScale", String(fontScale));
     document.documentElement.style.setProperty("--reader-font-scale", String(fontScale));
   }, [fontScale]);
+
+  useEffect(() => {
+    localStorage.setItem("metodichka-lineHeight", String(lineHeight));
+    document.documentElement.style.setProperty("--reader-line-height", String(lineHeight));
+  }, [lineHeight]);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -3542,6 +3585,8 @@ function App() {
         onToggleFocus={() => setFocusMode((v) => !v)}
         fontScale={fontScale}
         onFontScaleChange={setFontScale}
+        lineHeight={lineHeight}
+        onLineHeightChange={setLineHeight}
       />
 
       <div className={`layout ${focusMode ? "layout--focus" : ""}`}>
