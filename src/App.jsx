@@ -3109,17 +3109,51 @@ function SectionBody({ section, onOpenImage }) {
                 </div>
               )}
               {block.mediaType === "video" && (
-                <video className="content-media-video" controls>
-                  <source src={block.src} type="video/mp4" />
-                  Ваш браузер не поддерживает видео.
-                </video>
+                <>
+                  <video className="content-media-video" controls>
+                    <source src={block.src} type="video/mp4" />
+                    Ваш браузер не поддерживает видео.
+                  </video>
+                  {block.src && (
+                    <div className="media-actions">
+                      <a className="media-download" href={block.src} download>
+                        Скачать видео
+                      </a>
+                      <a
+                        className="media-download media-download--ghost"
+                        href={block.src}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Открыть
+                      </a>
+                    </div>
+                  )}
+                </>
               )}
               {block.mediaType === "audio" && (
-                <audio className="content-media-audio" controls>
-                  <source src={block.src} type="audio/mpeg" />
-                  <source src={block.src} type="audio/mp3" />
-                  Ваш браузер не поддерживает аудио.
-                </audio>
+                <>
+                  <audio className="content-media-audio" controls>
+                    <source src={block.src} type="audio/mpeg" />
+                    <source src={block.src} type="audio/mp3" />
+                    Ваш браузер не поддерживает аудио.
+                  </audio>
+                  {block.src && (
+                    <div className="media-actions">
+                      <a className="media-download" href={block.src} download>
+                        Скачать аудио
+                      </a>
+                      <a
+                        className="media-download media-download--ghost"
+                        href={block.src}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Открыть
+                      </a>
+                    </div>
+                  )}
+                </>
               )}
               {block.caption && (
                 <figcaption className="content-media-caption">
