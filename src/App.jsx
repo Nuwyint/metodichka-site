@@ -2644,6 +2644,30 @@ function Lightbox({ open, src, alt, caption, onClose }) {
   );
 }
 
+function Toasts({ items, onRemove }) {
+  return (
+    <div className="toasts" aria-live="polite" aria-relevant="additions removals">
+      {items.map((t) => (
+        <div key={t.id} className={`toast toast--${t.type || "info"}`}>
+          <div className="toast-body">
+            <div className="toast-title">{t.title}</div>
+            {t.message && <div className="toast-message">{t.message}</div>}
+          </div>
+          <button
+            type="button"
+            className="toast-close"
+            onClick={() => onRemove(t.id)}
+            aria-label="Закрыть уведомление"
+            title="Закрыть"
+          >
+            ×
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function SectionBody({ section, onOpenImage }) {
   // Если blocks нет – используем старый content как один текст-блок
   const blocks =
@@ -3073,6 +3097,8 @@ function App() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [lightbox, setLightbox] = useState(null);
   const searchInputRef = useRef(null);
+  const [toasts, setToasts] = useState([]);
+  const toastTimersRef = useRef(new Map());
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3084,6 +3110,31 @@ function App() {
     // при переходе на другую главу сбрасываем плашки
     setPanelPositions({});
   }, [currentId]);
+
+  const pushToast = ({ type = "info", title, message, durationMs = 2400 }) => {
+    const id = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    setToasts((prev) => [...prev, { id, type, title, message }]);
+    const timer = window.setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+      toastTimersRef.current.delete(id);
+    }, durationMs);
+    toastTimersRef.current.set(id, timer);
+    return id;
+  };
+
+  const removeToast = (id) => {
+    const timer = toastTimersRef.current.get(id);
+    if (timer) clearTimeout(timer);
+    toastTimersRef.current.delete(id);
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  useEffect(() => {
+    return () => {
+      toastTimersRef.current.forEach((t) => clearTimeout(t));
+      toastTimersRef.current.clear();
+    };
+  }, []);
 
   // Deep-linking: синхронизируем текущий раздел с URL hash и localStorage
   useEffect(() => {
@@ -3380,6 +3431,8 @@ function App() {
         caption={lightbox?.caption}
         onClose={() => setLightbox(null)}
       />
+
+      <Toasts items={toasts} onRemove={removeToast} />
     </div>
   );
 }
