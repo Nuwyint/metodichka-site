@@ -2906,7 +2906,15 @@ function InteractivePanel({ side, block, visible, top }) {
 // ------------------ ГЛАВНЫЙ КОМПОНЕНТ ------------------
 
 function App() {
-  const [currentId, setCurrentId] = useState("intro");
+  const [currentId, setCurrentId] = useState(() => {
+    const fromHash = String(window.location.hash || "").replace(/^#/, "");
+    if (fromHash && sections.some((s) => s.id === fromHash)) return fromHash;
+
+    const saved = localStorage.getItem("metodichka-currentId");
+    if (saved && sections.some((s) => s.id === saved)) return saved;
+
+    return "intro";
+  });
   const [scrollPercent, setScrollPercent] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
@@ -2918,6 +2926,26 @@ function App() {
     // при переходе на другую главу сбрасываем плашки
     setPanelPositions({});
   }, [currentId]);
+
+  // Deep-linking: синхронизируем текущий раздел с URL hash и localStorage
+  useEffect(() => {
+    localStorage.setItem("metodichka-currentId", currentId);
+    const nextUrl = `${window.location.pathname}${window.location.search}#${currentId}`;
+    window.history.replaceState(null, "", nextUrl);
+  }, [currentId]);
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const id = String(window.location.hash || "").replace(/^#/, "");
+      if (id && sections.some((s) => s.id === id)) {
+        setCurrentId(id);
+        setScrollPercent(0);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
    
   useEffect(() => {
     const handleScroll = () => {
