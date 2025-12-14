@@ -2940,32 +2940,16 @@ function App() {
             if (currentPosition === null || currentPosition === undefined) {
               if (p > (panelCfg.trigger ?? 30)) {
                 const offset = panelCfg.offset ?? 0.4;
-                // Фиксированная позиция относительно документа - устанавливаем один раз
-                const top = scrollTop + window.innerHeight * offset;
+                // Позиция "якорем": привязываем к ПРОЦЕНТУ скролла (trigger), а не к текущему scrollTop
+                // Тогда плашка живет в конкретном месте документа и НЕ "едет" за пользователем.
+                const top = (maxScroll * ((panelCfg.trigger ?? 30) / 100)) + window.innerHeight * offset;
                 newPositions[key] = top;
               } else {
                 newPositions[key] = null;
               }
             } else {
-              // Плашка уже показана - ограничиваем её позицию видимой областью
-              const viewportTop = scrollTop;
-              const viewportBottom = scrollTop + window.innerHeight;
-              const offset = panelCfg.offset ?? 0.4;
-              
-              // Ограничиваем позицию плашки, чтобы она оставалась в видимой области
-              let top = currentPosition;
-              
-              // Если плашка выше видимой области - перемещаем её вниз
-              if (top < viewportTop + 50) {
-                top = viewportTop + window.innerHeight * offset;
-              }
-              
-              // Если плашка ниже видимой области - перемещаем её вверх
-              if (top > viewportBottom - 100) {
-                top = viewportTop + window.innerHeight * offset;
-              }
-              
-              newPositions[key] = top;
+              // Плашка уже показана — сохраняем её якорную позицию (не обновляем на скролле)
+              newPositions[key] = currentPosition;
             }
           }
         });
@@ -2979,7 +2963,7 @@ function App() {
     handleScroll(); // посчитать сразу при монтировании
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentId, panelPositions]);
+  }, [currentId]);
 
 
   const currentIndex = sections.findIndex((s) => s.id === currentId);
