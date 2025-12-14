@@ -2938,18 +2938,13 @@ function App() {
         Object.entries(cfg).forEach(([key, panelCfg]) => {
           if (panelCfg && typeof panelCfg === 'object' && panelCfg.trigger !== undefined) {
             // Плашка появляется по ПРОЦЕНТУ скролла (trigger).
-            // Позиция (top) — фиксированная относительно viewport (под хедером),
-            // чтобы плашки НЕ "уползали" при скролле.
-            const currentPosition = prevPositions[key];
             const trigger = panelCfg.trigger ?? 30;
 
             if (p >= trigger) {
               const offset = panelCfg.offset ?? 0.4;
-              const headerH =
-                document.querySelector(".header")?.offsetHeight ?? 70;
-              const desiredFromTop = window.innerHeight * offset;
-              const minFromTop = headerH + 16;
-              const top = Math.max(desiredFromTop, minFromTop);
+              // Все плашки "живут" в документе и уезжают вместе со страницей.
+              // Позицию привязываем к trigger% (якорь), а внутри экрана — регулируем offset.
+              const top = (ms * (trigger / 100)) + window.innerHeight * offset;
               newPositions[key] = top;
             } else {
               // если пользователь скроллит назад выше trigger — прячем и даём появиться заново
@@ -3026,10 +3021,23 @@ function App() {
   leftPanels.sort((a, b) => a.trigger - b.trigger);
   rightPanels.sort((a, b) => a.trigger - b.trigger);
 
-  // На каждой стороне показываем только одну активную плашку (последняя по trigger),
-  // чтобы не было наложений.
-  const activeLeft = leftPanels.filter(p => p.visible).pop() || null;
-  const activeRight = rightPanels.filter(p => p.visible).pop() || null;
+  // Показываем ВСЕ плашки, которые активировались, и аккуратно разводим по Y,
+  // чтобы они не наслаивались друг на друга.
+  const visibleLeft = leftPanels.filter((p) => p.visible && typeof p.top === "number");
+  const visibleRight = rightPanels.filter((p) => p.visible && typeof p.top === "number");
+
+  const stackByTop = (items, minGap = 210) => {
+    const sorted = [...items].sort((a, b) => a.top - b.top);
+    let lastTop = -Infinity;
+    return sorted.map((it) => {
+      const nextTop = Math.max(it.top, lastTop + minGap);
+      lastTop = nextTop;
+      return { ...it, top: nextTop };
+    });
+  };
+
+  const stackedLeft = stackByTop(visibleLeft);
+  const stackedRight = stackByTop(visibleRight);
 
   return (
     <div className="app">
@@ -3066,26 +3074,26 @@ function App() {
       </div>
 
       {/* Интерактивные плашки слева */}
-      {activeLeft && (
+      {stackedLeft.map((p) => (
         <InteractivePanel
-          key={activeLeft.key}
+          key={p.key}
           side="left"
-          block={activeLeft.block}
-          visible={activeLeft.visible}
-          top={activeLeft.top}
+          block={p.block}
+          visible={p.visible}
+          top={p.top}
         />
-      )}
+      ))}
       
       {/* Интерактивные плашки справа */}
-      {activeRight && (
+      {stackedRight.map((p) => (
         <InteractivePanel
-          key={activeRight.key}
+          key={p.key}
           side="right"
-          block={activeRight.block}
-          visible={activeRight.visible}
-          top={activeRight.top}
+          block={p.block}
+          visible={p.visible}
+          top={p.top}
         />
-      )}
+      ))}
     </div>
   );
 }
