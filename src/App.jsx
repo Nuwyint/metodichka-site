@@ -3175,7 +3175,14 @@ function SectionBody({ section, onOpenImage }) {
 }
 
 
-function Sidebar({ sections, currentId, onSelect, recentIds = [] }) {
+function Sidebar({
+  sections,
+  currentId,
+  onSelect,
+  recentIds = [],
+  favoriteIds = [],
+  onToggleFavorite,
+}) {
   // Icons for each chapter
   const chapterIcons = {
     intro: "📖",
@@ -3194,6 +3201,33 @@ function Sidebar({ sections, currentId, onSelect, recentIds = [] }) {
     <aside className="sidebar">
       <div className="sidebar-card">
         <h2 className="sidebar-title">Оглавление</h2>
+
+        {favoriteIds.length > 0 && (
+          <>
+            <div className="sidebar-subtitle">Избранное</div>
+            <div className="sidebar-recent">
+              {favoriteIds.map((id) => {
+                const s = sections.find((x) => x.id === id);
+                if (!s) return null;
+                return (
+                  <button
+                    key={id}
+                    className="sidebar-recent-item"
+                    onClick={() => onSelect(id)}
+                    type="button"
+                    title={s.title}
+                  >
+                    <span className="sidebar-recent-icon">
+                      {chapterIcons[id] || "📄"}
+                    </span>
+                    <span className="sidebar-recent-text">{s.title}</span>
+                    <span className="sidebar-fav-pill">★</span>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
 
         {recentIds.length > 1 && (
           <>
@@ -3248,6 +3282,30 @@ function Sidebar({ sections, currentId, onSelect, recentIds = [] }) {
                     <span className="sidebar-item-sub">{section.short}</span>
                   )}
                 </span>
+
+                <button
+                  type="button"
+                  className={
+                    "sidebar-fav-btn" +
+                    (favoriteIds.includes(section.id) ? " is-fav" : "")
+                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleFavorite?.(section.id);
+                  }}
+                  aria-label={
+                    favoriteIds.includes(section.id)
+                      ? "Убрать из избранного"
+                      : "Добавить в избранное"
+                  }
+                  title={
+                    favoriteIds.includes(section.id)
+                      ? "Убрать из избранного"
+                      : "Добавить в избранное"
+                  }
+                >
+                  ★
+                </button>
               </button>
             </li>
           ))}
@@ -3408,6 +3466,15 @@ function App() {
       return [];
     }
   });
+  const [favoriteIds, setFavoriteIds] = useState(() => {
+    try {
+      const raw = localStorage.getItem("metodichka-favoriteIds");
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr.filter((x) => typeof x === "string") : [];
+    } catch {
+      return [];
+    }
+  });
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3513,6 +3580,21 @@ function App() {
       return next;
     });
   }, [currentId]);
+
+  const toggleFavorite = (id) => {
+    setFavoriteIds((prev) => {
+      const exists = prev.includes(id);
+      const next = exists ? prev.filter((x) => x !== id) : [id, ...prev];
+      localStorage.setItem("metodichka-favoriteIds", JSON.stringify(next));
+      pushToast({
+        type: "success",
+        title: exists ? "Убрано из избранного" : "Добавлено в избранное",
+        message: sections.find((s) => s.id === id)?.title || id,
+        durationMs: 1600,
+      });
+      return next;
+    });
+  };
 
   useEffect(() => {
     const onHashChange = () => {
@@ -3775,6 +3857,8 @@ function App() {
             sections={sections}
             currentId={currentId}
             recentIds={recentIds}
+            favoriteIds={favoriteIds}
+            onToggleFavorite={toggleFavorite}
             onSelect={(id) => {
               selectSection(id);
             }}

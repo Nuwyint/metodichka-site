@@ -406,7 +406,7 @@ body {
   padding: 8px 10px;
   cursor: pointer;
   display: grid;
-  grid-template-columns: 20px 1fr;
+  grid-template-columns: 20px 1fr auto;
   gap: 8px;
   align-items: center;
   text-align: left;
@@ -427,6 +427,46 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.sidebar-fav-pill {
+  font-size: 12px;
+  color: rgba(250, 204, 21, 0.9);
+  border: 1px solid rgba(250, 204, 21, 0.25);
+  background: rgba(250, 204, 21, 0.08);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.sidebar-item {
+  position: relative;
+}
+
+.sidebar-fav-btn {
+  margin-left: auto;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: transparent;
+  color: rgba(229, 231, 235, 0.55);
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.sidebar-fav-btn:hover {
+  border-color: rgba(250, 204, 21, 0.35);
+  color: rgba(250, 204, 21, 0.95);
+  background: rgba(250, 204, 21, 0.08);
+}
+
+.sidebar-fav-btn.is-fav {
+  border-color: rgba(250, 204, 21, 0.35);
+  color: rgba(250, 204, 21, 0.95);
+  background: rgba(250, 204, 21, 0.1);
 }
 
 .sidebar-list {
