@@ -2994,6 +2994,8 @@ function App() {
   });
   const [scrollPercent, setScrollPercent] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const scrollSaveTimerRef = useRef(null);
+  const didInitialScrollRestoreRef = useRef(false);
 
   // Храним позиции всех плашек
   const [panelPositions, setPanelPositions] = useState({});
@@ -3030,6 +3032,18 @@ function App() {
       const st = window.scrollY || doc.scrollTop || 0;
       const ms = doc.scrollHeight - window.innerHeight;
       setShowBackToTop(st > 700);
+
+      // сохраняем позицию скролла (с троттлингом), чтобы после перезагрузки вернуться туда же
+      if (!scrollSaveTimerRef.current) {
+        scrollSaveTimerRef.current = window.setTimeout(() => {
+          try {
+            localStorage.setItem(`metodichka-scroll:${currentId}`, String(window.scrollY || 0));
+          } catch {
+            // ignore storage errors
+          }
+          scrollSaveTimerRef.current = null;
+        }, 250);
+      }
 
       if (ms <= 0) {
         setScrollPercent(0);
@@ -3072,7 +3086,24 @@ function App() {
 
     handleScroll(); // посчитать сразу при монтировании
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollSaveTimerRef.current) {
+        clearTimeout(scrollSaveTimerRef.current);
+        scrollSaveTimerRef.current = null;
+      }
+    };
+  }, [currentId]);
+
+  // восстановление скролла только при первой загрузке страницы
+  useEffect(() => {
+    if (didInitialScrollRestoreRef.current) return;
+    didInitialScrollRestoreRef.current = true;
+    const raw = localStorage.getItem(`metodichka-scroll:${currentId}`);
+    const y = raw ? parseInt(raw, 10) : 0;
+    if (Number.isFinite(y) && y > 0) {
+      requestAnimationFrame(() => window.scrollTo({ top: y, behavior: "auto" }));
+    }
   }, [currentId]);
 
 
