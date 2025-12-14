@@ -1321,6 +1321,10 @@ body {
   .content-media-audio {
     border: 1px solid #ddd !important;
   }
+
+  .image-placeholder {
+    display: none !important;
+  }
 }
 
 /* ---------------- REDUCE MOTION ---------------- */
@@ -1332,6 +1336,22 @@ body {
   animation-iteration-count: 1 !important;
   transition-duration: 0.001ms !important;
   scroll-behavior: auto !important;
+}
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  .print-only {
+    display: block !important;
+  }
+
+  .print-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 12px;
+  }
 }
 
 .content-body {

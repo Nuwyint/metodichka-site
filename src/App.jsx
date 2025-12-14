@@ -3870,6 +3870,7 @@ function App() {
 
         <main className="main" id="main-content" tabIndex={-1}>
           <article className="content">
+            <div className="print-only print-title">{currentSection.title}</div>
             <h2 className="content-title">{currentSection.title}</h2>
             {currentSection.short && (
               <p className="content-short">{currentSection.short}</p>
