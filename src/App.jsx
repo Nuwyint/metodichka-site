@@ -2946,7 +2946,11 @@ function App() {
             if (p >= trigger) {
               if (currentPosition === null || currentPosition === undefined) {
                 const offset = panelCfg.offset ?? 0.4;
-                const top = st + window.innerHeight * offset;
+                const headerH =
+                  document.querySelector(".header")?.offsetHeight ?? 70;
+                const desiredFromTop = window.innerHeight * offset;
+                const minFromTop = headerH + 16;
+                const top = st + Math.max(desiredFromTop, minFromTop);
                 newPositions[key] = top;
               } else {
                 newPositions[key] = currentPosition;

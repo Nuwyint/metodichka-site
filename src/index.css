@@ -866,8 +866,9 @@ body {
   border: 1px solid rgba(129, 140, 248, 0.5);
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.95);
   color: #e5e7eb;
-  /* Должно быть выше sticky-хедера (у него z-index: 20) */
-  z-index: 30;
+  /* Должно быть НИЖЕ sticky-хедера (у него z-index: 20),
+     чтобы плашки не наслаивались на хедер */
+  z-index: 15;
   opacity: 0;
   pointer-events: none;
   transform: translateY(-10px); /* лёгкий подъём для анимации появления */
