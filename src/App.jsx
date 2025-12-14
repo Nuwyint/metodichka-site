@@ -189,8 +189,8 @@ const sections = [
       {
       type: "media",
       mediaType: "hover-image",
-      src: "/media/normalspectre.png",
-      hoverSrc: "/media/memespectre.png",
+      src: withBase("/media/normalspectre.png"),
+      hoverSrc: withBase("/media/memespectre.png"),
       alt: "Сравнение цветовых моделей RGB и CMYK",
       altHover: "COLOR IS COLOR!",
       caption:
@@ -228,7 +228,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/harmonicColor.jpg",
+        src: withBase("/media/harmonicColor.jpg"),
         alt: "Пример однотонной гармонии",
         caption: "Рис. 4. Пример однотонной гармонии",
       },
@@ -249,7 +249,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/neuborhColor.png",
+        src: withBase("/media/neuborhColor.png"),
         alt: "Родственные цвета, расположенные в соседних секторах круга, и аналоговая триада",
         caption: "Рис. 5. Родственные цвета, расположенные в соседних секторах круга, и аналоговая триада",
       },
@@ -270,7 +270,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/polarHarmony.png",
+        src: withBase("/media/polarHarmony.png"),
         alt: "Полярная гармония пар цветов",
         caption: "Рис. 6. Полярная гармония пар цветов",
       },
@@ -279,7 +279,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/polarHarmonyTriada.png",
+        src: withBase("/media/polarHarmonyTriada.png"),
         alt: "Полярные триады",
         caption: "Рис. 7. Полярные триады",
       },
@@ -460,7 +460,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ui-map.jpg",
+        src: withBase("/media/ui-map.jpg"),
         alt: "Примеры карт интерфейса",
         caption: "Рис. 8. Примеры карт интерфейса",
       },
@@ -530,7 +530,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/flatdesign.png",
+        src: withBase("/media/flatdesign.png"),
         alt: "Пример плоского дизайна",
         caption: "Рис. 9. Flat Design",
       },
@@ -552,7 +552,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/material-design-ui.png",
+        src: withBase("/media/material-design-ui.png"),
         alt: "Пример материального дизайна",
         caption: "Рис. 10. Material Design",
       },
@@ -574,7 +574,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/minimalistic.png",
+        src: withBase("/media/minimalistic.png"),
         alt: "Минималистичный и интуитивный макет",
         caption: "Рис. 11. Минималистичный и интуитивный макет",
       },
@@ -596,7 +596,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/pictocgram.png",
+        src: withBase("/media/pictocgram.png"),
         alt: "Пиктограммы часто используемых операций",
         caption: "Рис. 12. Пиктограммы часто используемых операций",
       },
@@ -621,7 +621,7 @@ const sections = [
       {
         type: "media",
         mediaType: "image",
-        src: "/media/primer-design.jpg",
+        src: withBase("/media/primer-design.jpg"),
         alt: "Пример отображения GUI на разных устройствах",
         caption: "Рис. 13. Пример отображения GUI на разных устройствах",
       },
@@ -734,7 +734,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/generic-pic.png",
+        src: withBase("/media/generic-pic.png"),
         alt: "Генерация изображения с помощью примитивов кода",
         caption: "Рис. 14. Генерация изображения с помощью примитивов кода",
       },
@@ -778,7 +778,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/primgeneration.png",
+        src: withBase("/media/primgeneration.png"),
         alt: "Пример программной генерации изображения с помощью нейросетевых технологий",
         caption: "Рис. 15. Пример программной генерации изображения с помощью нейросетевых технологий",
       },
@@ -844,8 +844,8 @@ plt.show()`,
       {
         type: "media",
         mediaType: "hover-image",
-        src: "/media/мой постер  (1).png",
-        hoverSrc: "/media/мой постер исходники копия (1).png",
+        src: withBase("/media/мой постер  (1).png"),
+        hoverSrc: withBase("/media/мой постер исходники копия (1).png"),
         alt: "Пример использования нескольких элементов с разных изображений для создания плаката",
         altHover: "Исходные фотографии, использованные для создания композиции",
         caption: "Рис. 15. Пример использования нескольких элементов с разных изображений для создания плаката (наведите курсор, чтобы увидеть исходники).",
@@ -998,7 +998,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/pictograms-example.png",
+        src: withBase("/media/pictograms-example.png"),
         alt: "Пример разных стилей пиктограмм",
         caption: "Рис. 16. Пример разных стилей пиктограмм",
       },
@@ -1071,7 +1071,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/милый дом.svg",
+        src: withBase("/media/милый дом.svg"),
         alt: "Пример векторной иллюстрации",
         caption: "Пример векторной иллюстрации в формате SVG",
       },
@@ -1141,7 +1141,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/17.png",
+        src: withBase("/media/17.png"),
         alt: "Пример сцены для визуализации",
         caption: "Рис. 17. Пример сцены для визуализации",
       },
@@ -1175,15 +1175,15 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image-comparison",
-        beforeSrc: "/media/ris18.1.png",
-        afterSrc: "/media/ris18.2.png",
+        beforeSrc: withBase("/media/ris18.1.png"),
+        afterSrc: withBase("/media/ris18.2.png"),
         alt: "Сравнение использования освещения для передачи времени суток и настроения сцены",
         caption: "Рис. 18. Пример использования освещения для передачи времени суток и настроения сцены (перетащите ползунок для сравнения)",
       },
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris19.jpg",
+        src: withBase("/media/ris19.jpg"),
         alt: "Пример мультипликационного стиля в 3D",
         caption: "Рис. 19. Пример мультипликационного стиля в 3D",
       },
@@ -1224,14 +1224,14 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris20.jpg",
+        src: withBase("/media/ris20.jpg"),
         alt: "Источники света",
         caption: "Рис. 20. Источники света",
       },
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris21.png",
+        src: withBase("/media/ris21.png"),
         alt: "Использование различных цветовых решений источников света, влияющих на настроение сцены",
         caption: "Рис. 21. Использование различных цветовых решений источников света, влияющих на настроение сцены: а – красный цвет, передающий напряженную атмосферу; б – нейтральный белый свет для демонстрации объектов; в – синие тона, передающие атмосферу ночи и спокойствия; г – комбинирование теплых оранжевого и розового цвета, передающих атмосферу тепла и уюта",
       },
@@ -1275,7 +1275,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "video",
-        src: "/media/Blender Tutorial - Creating a Stormy Ocean [get.gt].mp4",
+        src: withBase("/media/Blender Tutorial - Creating a Stormy Ocean [get.gt].mp4"),
         caption: "Пример создания океана в Blender",
       },
     ],
@@ -1344,7 +1344,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris22.jpg",
+        src: withBase("/media/ris22.jpg"),
         alt: "Пример раскадровки движения мяча с предварительным движением",
         caption: "Рис. 22. Пример раскадровки движения мяча с предварительным движением",
       },
@@ -1364,7 +1364,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris23.png",
+        src: withBase("/media/ris23.png"),
         alt: "Анимация движения ноги на одном кадре, демонстрирующая принцип следования по пути",
         caption: "Рис. 23. Анимация движения ноги на одном кадре, демонстрирующая принцип следования по пути",
       },
@@ -1381,7 +1381,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris24.png",
+        src: withBase("/media/ris24.png"),
         alt: "Движение по дугам",
         caption: "Рис. 24. Движение по дугам",
       },
@@ -1401,14 +1401,14 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris25.png",
+        src: withBase("/media/ris25.png"),
         alt: "Иллюстрация распределения кадров по временной шкале",
         caption: "Рис. 25. Иллюстрация распределения кадров по временной шкале",
       },
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris26.png",
+        src: withBase("/media/ris26.png"),
         alt: "Ключевые кадры во временном промежутке",
         caption: "Рис. 26. Ключевые кадры во временном промежутке",
       },
@@ -1441,7 +1441,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "image",
-        src: "/media/ris27.png",
+        src: withBase("/media/ris27.png"),
         alt: "Скелетная анимация персонажа в трехмерном пространстве",
         caption: "Рис. 27. Скелетная анимация персонажа в трехмерном пространстве",
       },
@@ -1486,7 +1486,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "video",
-        src: "/media/fin.mp4",
+        src: withBase("/media/fin.mp4"),
         caption: "Пример выполненной анимации для практической работы № 7",
       },
     ],
@@ -1570,7 +1570,7 @@ plt.show()`,
       {
         type: "media",
         mediaType: "audio",
-        src: "/media/cricket-sound.mp3",
+        src: withBase("/media/cricket-sound.mp3"),
         caption: "Пример звукового файла для мультимедийного проекта",
       },
       {
@@ -1889,6 +1889,8 @@ plt.show()`,
     ],
   },
 ];
+
+const withBase = (path) => `${import.meta.env.BASE_URL}${String(path || "").replace(/^\/+/, "")}`;
 
 // ------------------ ИНТЕРАКТИВ ДЛЯ ПЛАШЕК ------------------
 
@@ -2439,7 +2441,7 @@ function BackgroundMusic() {
       <div className="background-music-container">
         <video
           ref={videoRef}
-          src="/media/C-418 Aria Math 1 hour handpan cover [get.gt].mp4"
+          src={withBase("/media/C-418 Aria Math 1 hour handpan cover [get.gt].mp4")}
           loop
           muted={false}
           className="background-music-video"
