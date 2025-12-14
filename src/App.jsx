@@ -2908,6 +2908,7 @@ function InteractivePanel({ side, block, visible, top }) {
 function App() {
   const [currentId, setCurrentId] = useState("intro");
   const [scrollPercent, setScrollPercent] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   // Храним позиции всех плашек
   const [panelPositions, setPanelPositions] = useState({});
@@ -2923,6 +2924,7 @@ function App() {
       const doc = document.documentElement;
       const st = window.scrollY || doc.scrollTop || 0;
       const ms = doc.scrollHeight - window.innerHeight;
+      setShowBackToTop(st > 700);
 
       if (ms <= 0) {
         setScrollPercent(0);
@@ -3098,6 +3100,16 @@ function App() {
           top={p.top}
         />
       ))}
+
+      <button
+        type="button"
+        className={`back-to-top ${showBackToTop ? "is-visible" : ""}`}
+        onClick={scrollToTop}
+        aria-label="Наверх"
+        title="Наверх"
+      >
+        ↑
+      </button>
     </div>
   );
 }

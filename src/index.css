@@ -36,6 +36,43 @@ body {
   background: radial-gradient(circle at top left, #1d253a 0, #020617 50%);
   position: relative;
 }
+
+/* ---------------- BACK TO TOP ---------------- */
+
+.back-to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 18; /* ниже header (20), но выше контента */
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(15, 23, 42, 0.92);
+  color: var(--text-main);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.65);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease, background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  background: rgba(30, 64, 175, 0.35);
+  border-color: var(--accent);
+}
 /* ---------------- HEADER ---------------- */
 
 .header {
