@@ -2499,6 +2499,8 @@ function Header({
   onLineHeightChange,
   contentWidth,
   onContentWidthChange,
+  showPanels,
+  onShowPanelsChange,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -2683,6 +2685,20 @@ function Header({
                     title="Шире"
                   >
                     +
+                  </button>
+                </div>
+              </div>
+
+              <div className="settings-row settings-row--mt">
+                <div className="settings-label">Плашки</div>
+                <div className="settings-controls">
+                  <button
+                    type="button"
+                    className="settings-btn"
+                    onClick={() => onShowPanelsChange(!showPanels)}
+                    title="Показать/скрыть боковые плашки"
+                  >
+                    {showPanels ? "Вкл" : "Выкл"}
                   </button>
                 </div>
               </div>
@@ -3296,6 +3312,10 @@ function App() {
     const v = saved ? parseInt(saved, 10) : 920;
     return Number.isFinite(v) ? Math.min(1180, Math.max(720, v)) : 920;
   });
+  const [showPanels, setShowPanels] = useState(() => {
+    const saved = localStorage.getItem("metodichka-showPanels");
+    return saved !== "0";
+  });
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3384,6 +3404,10 @@ function App() {
     localStorage.setItem("metodichka-contentWidth", String(contentWidth));
     document.documentElement.style.setProperty("--reader-content-width", `${contentWidth}px`);
   }, [contentWidth]);
+
+  useEffect(() => {
+    localStorage.setItem("metodichka-showPanels", showPanels ? "1" : "0");
+  }, [showPanels]);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -3632,6 +3656,8 @@ function App() {
         onLineHeightChange={setLineHeight}
         contentWidth={contentWidth}
         onContentWidthChange={setContentWidth}
+        showPanels={showPanels}
+        onShowPanelsChange={setShowPanels}
       />
 
       <div className={`layout ${focusMode ? "layout--focus" : ""}`}>
@@ -3660,26 +3686,28 @@ function App() {
       </div>
 
       {/* Интерактивные плашки слева */}
-      {stackedLeft.map((p) => (
-      <InteractivePanel
-          key={p.key}
-        side="left"
-          block={p.block}
-          visible={p.visible}
-          top={p.top}
-        />
-      ))}
+      {showPanels &&
+        stackedLeft.map((p) => (
+          <InteractivePanel
+            key={p.key}
+            side="left"
+            block={p.block}
+            visible={p.visible}
+            top={p.top}
+          />
+        ))}
       
       {/* Интерактивные плашки справа */}
-      {stackedRight.map((p) => (
-      <InteractivePanel
-          key={p.key}
-        side="right"
-          block={p.block}
-          visible={p.visible}
-          top={p.top}
-        />
-      ))}
+      {showPanels &&
+        stackedRight.map((p) => (
+          <InteractivePanel
+            key={p.key}
+            side="right"
+            block={p.block}
+            visible={p.visible}
+            top={p.top}
+          />
+        ))}
 
       <button
         type="button"
