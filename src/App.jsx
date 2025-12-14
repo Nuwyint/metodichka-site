@@ -2479,7 +2479,41 @@ function BackgroundMusic() {
   );
 }
 
-function Header({ currentTitle, progress, onPrev, onNext, hasPrev, hasNext }) {
+function Header({
+  currentTitle,
+  progress,
+  onPrev,
+  onNext,
+  hasPrev,
+  hasNext,
+  sections,
+  onSelectSection,
+}) {
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    const onDown = (e) => {
+      if (!rootRef.current) return;
+      if (!rootRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, []);
+
+  const q = query.trim().toLowerCase();
+  const results =
+    q.length >= 1
+      ? (sections || []).filter((s) => s.title.toLowerCase().includes(q)).slice(0, 8)
+      : [];
+
+  const pick = (id) => {
+    onSelectSection?.(id);
+    setOpen(false);
+    setQuery("");
+  };
+
   return (
     <header className="header">
       <div className="header-left">
@@ -2491,6 +2525,49 @@ function Header({ currentTitle, progress, onPrev, onNext, hasPrev, hasNext }) {
       </div>
 
       <div className="header-right">
+        <div className="header-search" ref={rootRef}>
+          <input
+            className="header-search-input"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setOpen(true);
+            }}
+            onFocus={() => setOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && results[0]) pick(results[0].id);
+              if (e.key === "Escape") {
+                setOpen(false);
+                setQuery("");
+              }
+            }}
+            placeholder="Поиск главы…"
+            aria-label="Поиск по главам"
+          />
+
+          {open && q.length >= 1 && (
+            <div className="header-search-results" role="listbox">
+              {results.length === 0 ? (
+                <div className="header-search-empty">Ничего не найдено</div>
+              ) : (
+                results.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    className="header-search-item"
+                    onClick={() => pick(s.id)}
+                  >
+                    <span className="header-search-item-title">{s.title}</span>
+                    {s.short && (
+                      <span className="header-search-item-sub">{s.short}</span>
+                    )}
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+
         <button
           className="header-btn"
           onClick={onPrev}
@@ -3030,6 +3107,12 @@ function App() {
     scrollToTop();
   };
 
+  const selectSection = (id) => {
+    setCurrentId(id);
+    setScrollPercent(0);
+    scrollToTop();
+  };
+
    const cfg = interactiveConfig[currentId] || {};
 
   // Определяем, какие плашки слева, а какие справа
@@ -3083,6 +3166,8 @@ function App() {
         onNext={goNext}
         hasPrev={hasPrev}
         hasNext={hasNext}
+        sections={sections}
+        onSelectSection={selectSection}
       />
 
       <div className="layout">
@@ -3090,9 +3175,7 @@ function App() {
           sections={sections}
           currentId={currentId}
           onSelect={(id) => {
-            setCurrentId(id);
-            setScrollPercent(0);
-            scrollToTop();
+            selectSection(id);
           }}
         />
 
