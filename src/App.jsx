@@ -2501,6 +2501,8 @@ function Header({
   onContentWidthChange,
   showPanels,
   onShowPanelsChange,
+  reduceMotion,
+  onReduceMotionChange,
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -2699,6 +2701,20 @@ function Header({
                     title="Показать/скрыть боковые плашки"
                   >
                     {showPanels ? "Вкл" : "Выкл"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="settings-row settings-row--mt">
+                <div className="settings-label">Анимации</div>
+                <div className="settings-controls">
+                  <button
+                    type="button"
+                    className="settings-btn"
+                    onClick={() => onReduceMotionChange(!reduceMotion)}
+                    title="Уменьшить анимации"
+                  >
+                    {reduceMotion ? "Выкл" : "Вкл"}
                   </button>
                 </div>
               </div>
@@ -3316,6 +3332,10 @@ function App() {
     const saved = localStorage.getItem("metodichka-showPanels");
     return saved !== "0";
   });
+  const [reduceMotion, setReduceMotion] = useState(() => {
+    const saved = localStorage.getItem("metodichka-reduceMotion");
+    return saved === "1";
+  });
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3408,6 +3428,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem("metodichka-showPanels", showPanels ? "1" : "0");
   }, [showPanels]);
+
+  useEffect(() => {
+    localStorage.setItem("metodichka-reduceMotion", reduceMotion ? "1" : "0");
+    document.documentElement.classList.toggle("reduce-motion", reduceMotion);
+  }, [reduceMotion]);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -3658,6 +3683,8 @@ function App() {
         onContentWidthChange={setContentWidth}
         showPanels={showPanels}
         onShowPanelsChange={setShowPanels}
+        reduceMotion={reduceMotion}
+        onReduceMotionChange={setReduceMotion}
       />
 
       <div className={`layout ${focusMode ? "layout--focus" : ""}`}>
