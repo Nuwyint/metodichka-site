@@ -3175,7 +3175,7 @@ function SectionBody({ section, onOpenImage }) {
 }
 
 
-function Sidebar({ sections, currentId, onSelect }) {
+function Sidebar({ sections, currentId, onSelect, recentIds = [] }) {
   // Icons for each chapter
   const chapterIcons = {
     intro: "📖",
@@ -3194,6 +3194,36 @@ function Sidebar({ sections, currentId, onSelect }) {
     <aside className="sidebar">
       <div className="sidebar-card">
         <h2 className="sidebar-title">Оглавление</h2>
+
+        {recentIds.length > 1 && (
+          <>
+            <div className="sidebar-subtitle">Недавние</div>
+            <div className="sidebar-recent">
+              {recentIds
+                .filter((id) => id !== currentId)
+                .slice(0, 6)
+                .map((id) => {
+                  const s = sections.find((x) => x.id === id);
+                  if (!s) return null;
+                  return (
+                    <button
+                      key={id}
+                      className="sidebar-recent-item"
+                      onClick={() => onSelect(id)}
+                      type="button"
+                      title={s.title}
+                    >
+                      <span className="sidebar-recent-icon">
+                        {chapterIcons[id] || "📄"}
+                      </span>
+                      <span className="sidebar-recent-text">{s.title}</span>
+                    </button>
+                  );
+                })}
+            </div>
+          </>
+        )}
+
         <ul className="sidebar-list">
           {sections.map((section, idx) => (
             <li key={section.id}>
@@ -3369,6 +3399,15 @@ function App() {
     const saved = localStorage.getItem("metodichka-reduceMotion");
     return saved === "1";
   });
+  const [recentIds, setRecentIds] = useState(() => {
+    try {
+      const raw = localStorage.getItem("metodichka-recentIds");
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr.filter((x) => typeof x === "string") : [];
+    } catch {
+      return [];
+    }
+  });
   const scrollSaveTimerRef = useRef(null);
   const didInitialScrollRestoreRef = useRef(false);
 
@@ -3466,6 +3505,14 @@ function App() {
     localStorage.setItem("metodichka-reduceMotion", reduceMotion ? "1" : "0");
     document.documentElement.classList.toggle("reduce-motion", reduceMotion);
   }, [reduceMotion]);
+
+  useEffect(() => {
+    setRecentIds((prev) => {
+      const next = [currentId, ...prev.filter((x) => x !== currentId)].slice(0, 8);
+      localStorage.setItem("metodichka-recentIds", JSON.stringify(next));
+      return next;
+    });
+  }, [currentId]);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -3727,6 +3774,7 @@ function App() {
           <Sidebar
             sections={sections}
             currentId={currentId}
+            recentIds={recentIds}
             onSelect={(id) => {
               selectSection(id);
             }}

@@ -383,6 +383,52 @@ body {
   letter-spacing: 0.12em;
 }
 
+.sidebar-subtitle {
+  margin: 10px 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(229, 231, 235, 0.75);
+}
+
+.sidebar-recent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.sidebar-recent-item {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(15, 23, 42, 0.55);
+  color: var(--text-main);
+  padding: 8px 10px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+}
+
+.sidebar-recent-item:hover {
+  border-color: rgba(139, 92, 246, 0.35);
+  background: rgba(139, 92, 246, 0.12);
+}
+
+.sidebar-recent-icon {
+  font-size: 14px;
+}
+
+.sidebar-recent-text {
+  font-size: 12px;
+  color: rgba(229, 231, 235, 0.85);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .sidebar-list {
   list-style: none;
   padding: 0;
